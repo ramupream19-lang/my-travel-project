@@ -98,7 +98,7 @@ function seeded(n: number) {
 export function generateFlights(from: string, to: string): Flight[] {
   return Array.from({ length: 18 }, (_, i) => {
     const r = seeded(i + from.length * 7 + to.length * 13);
-    const [airline, logo] = AIRLINES[i % AIRLINES.length];
+    const [airline, logo] = AIRLINES[i % AIRLINES.length]!;
     const stops = r > 0.72 ? 2 : r > 0.42 ? 1 : 0;
     const depHour = (5 + i) % 24;
     const durH = 3 + Math.round(r * 12) + stops * 2;
