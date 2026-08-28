@@ -19,21 +19,23 @@ export const Route = createFileRoute("/faq")({
 
 function FaqPage() {
   return (
-    <div className="space-y-3">
-      <GlassCard>
-        <Accordion type="single" collapsible className="w-full">
-          {FAQS.map((f, i) => (
-            <AccordionItem key={i} value={`q${i}`} className="border-b border-border last:border-0">
-              <AccordionTrigger className="text-left text-[15px] font-semibold hover:no-underline">
-                {f.q}
-              </AccordionTrigger>
-              <AccordionContent className="text-[13px] leading-relaxed text-muted-foreground">
-                {f.a}
-              </AccordionContent>
-            </AccordionItem>
-          ))}
-        </Accordion>
-      </GlassCard>
-    </div>
+    <PhoneShell title="Help" subtitle="Frequently asked questions">
+      <div className="space-y-3">
+        <GlassCard>
+          <Accordion type="single" collapsible className="w-full">
+            {FAQS.map((f, i) => (
+              <AccordionItem key={i} value={`q${i}`} className="border-b border-border last:border-0">
+                <AccordionTrigger className="text-left text-[15px] font-semibold hover:no-underline">
+                  {f.q}
+                </AccordionTrigger>
+                <AccordionContent className="text-[13px] leading-relaxed text-muted-foreground">
+                  {f.a}
+                </AccordionContent>
+              </AccordionItem>
+            ))}
+          </Accordion>
+        </GlassCard>
+      </div>
+    </PhoneShell>
   );
 }
