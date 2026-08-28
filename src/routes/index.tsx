@@ -1,24 +1,59 @@
 import { createFileRoute } from "@tanstack/react-router";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { PhoneShell } from "@/components/travel/PhoneShell";
+import { FlightsTab } from "@/components/travel/FlightsTab";
+import { StaysTab } from "@/components/travel/StaysTab";
+import { CarsTab } from "@/components/travel/CarsTab";
+import { AiTab } from "@/components/travel/AiTab";
 
-// No head() here: the home route inherits title/description/og/twitter from
-// __root.tsx, and ships no og:image so serve-time hosting can inject the
-// project's social preview (explicit og:image or latest screenshot).
 export const Route = createFileRoute("/")({
-  component: Index,
+  head: () => ({
+    meta: [
+      { title: "TravelMate — Book flights, stays & cars" },
+      { name: "description", content: "Search and book flights, hotels and car rentals with an iPhone glassmorphism experience." },
+      { property: "og:title", content: "TravelMate — Book flights, stays & cars" },
+      { property: "og:description", content: "Search and book flights, hotels and car rentals with an iPhone glassmorphism experience." },
+      { property: "og:type", content: "website" },
+      { name: "twitter:card", content: "summary_large_image" },
+    ],
+  }),
+  component: IndexPage,
 });
 
-// IMPORTANT: Replace this placeholder. See ./README.md for routing conventions.
-function Index() {
+function IndexPage() {
   return (
-    <div
-      className="flex min-h-screen items-center justify-center"
-      style={{ backgroundColor: "#fcfbf8" }}
-    >
-      <img
-        data-lovable-blank-page-placeholder="REMOVE_THIS"
-        src="https://cdn.gpteng.co/blank-app-v1.svg"
-        alt="Your app will live here!"
-      />
-    </div>
+    <PhoneShell title="TravelMate" subtitle="Where to next?">
+      <Tabs defaultValue="flights" className="w-full">
+        <TabsList className="glass mb-3 grid h-12 w-full grid-cols-4 p-1">
+          {[
+            { k: "flights", l: "Flights" },
+            { k: "stays", l: "Stays" },
+            { k: "cars", l: "Cars" },
+            { k: "ai", l: "AI" },
+          ].map(({ k, l }) => (
+            <TabsTrigger
+              key={k}
+              value={k}
+              className="rounded-xl text-[12px] font-semibold data-[state=active]:gradient-primary data-[state=active]:text-primary-foreground"
+            >
+              {l}
+            </TabsTrigger>
+          ))}
+        </TabsList>
+        <TabsContent value="flights">
+          <FlightsTab />
+        </TabsContent>
+        <TabsContent value="stays">
+          <StaysTab />
+        </TabsContent>
+        <TabsContent value="cars">
+          <CarsTab />
+        </TabsContent>
+        <TabsContent value="ai">
+          <AiTab />
+        </TabsContent>
+      </Tabs>
+
+    </PhoneShell>
   );
 }
