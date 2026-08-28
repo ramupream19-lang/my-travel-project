@@ -116,7 +116,7 @@ function DestinationsPage() {
             </p>
             <p className="text-[18px] font-bold text-primary">from ${d.price}</p>
             <p className="text-[12px] text-muted-foreground">
-              Best time: {d.besTime} · {d.weather}
+              Best time: {d.bestTime} · {d.weather}
             </p>
             <p className="text-[12px] text-muted-foreground">Currency: {d.currency}</p>
             <p className="text-[13px] leading-relaxed text-foreground/80">{d.description}</p>
