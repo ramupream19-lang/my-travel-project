@@ -58,7 +58,133 @@ export const AIRPORTS: Airport[] = [
   { code: "GIG", city: "Rio de Janeiro", country: "Brazil", region: "South America", domestic: false, embassy: "https://www.gov.br/mre" },
   { code: "LIM", city: "Lima", country: "Peru", region: "South America", domestic: false, embassy: "https://www.gob.pe/migraciones" },
   { code: "MEX", city: "Mexico City", country: "Mexico", region: "North America", domestic: false, embassy: "https://www.inm.gob.mx" },
+  // --- Worldwide coverage ---
+  // India
+  { code: "BOM", city: "Mumbai", country: "India", region: "Asia", domestic: false, embassy: "https://indianvisaonline.gov.in" },
+  { code: "BLR", city: "Bengaluru", country: "India", region: "Asia", domestic: false, embassy: "https://indianvisaonline.gov.in" },
+  { code: "MAA", city: "Chennai", country: "India", region: "Asia", domestic: false, embassy: "https://indianvisaonline.gov.in" },
+  { code: "HYD", city: "Hyderabad", country: "India", region: "Asia", domestic: false, embassy: "https://indianvisaonline.gov.in" },
+  { code: "CCU", city: "Kolkata", country: "India", region: "Asia", domestic: false, embassy: "https://indianvisaonline.gov.in" },
+  { code: "COK", city: "Kochi", country: "India", region: "Asia", domestic: false, embassy: "https://indianvisaonline.gov.in" },
+  { code: "GOI", city: "Goa", country: "India", region: "Asia", domestic: false, embassy: "https://indianvisaonline.gov.in" },
+  { code: "JAI", city: "Jaipur", country: "India", region: "Asia", domestic: false, embassy: "https://indianvisaonline.gov.in" },
+  { code: "AMD", city: "Ahmedabad", country: "India", region: "Asia", domestic: false, embassy: "https://indianvisaonline.gov.in" },
+  { code: "PNQ", city: "Pune", country: "India", region: "Asia", domestic: false, embassy: "https://indianvisaonline.gov.in" },
+  { code: "TRV", city: "Thiruvananthapuram", country: "India", region: "Asia", domestic: false, embassy: "https://indianvisaonline.gov.in" },
+  { code: "LKO", city: "Lucknow", country: "India", region: "Asia", domestic: false, embassy: "https://indianvisaonline.gov.in" },
+  { code: "IXL", city: "Leh", country: "India", region: "Asia", domestic: false, embassy: "https://indianvisaonline.gov.in" },
+  // Rest of Asia
+  { code: "SIN", city: "Singapore", country: "Singapore", region: "Asia", domestic: false, embassy: "https://www.ica.gov.sg" },
+  { code: "KUL", city: "Kuala Lumpur", country: "Malaysia", region: "Asia", domestic: false, embassy: "https://malaysiavisa.imi.gov.my" },
+  { code: "HKG", city: "Hong Kong", country: "China", region: "Asia", domestic: false, embassy: "https://www.immd.gov.hk" },
+  { code: "PEK", city: "Beijing", country: "China", region: "Asia", domestic: false, embassy: "https://bio.visaforchina.cn" },
+  { code: "PVG", city: "Shanghai", country: "China", region: "Asia", domestic: false, embassy: "https://bio.visaforchina.cn" },
+  { code: "ICN", city: "Seoul", country: "South Korea", region: "Asia", domestic: false, embassy: "https://www.visa.go.kr" },
+  { code: "KIX", city: "Osaka", country: "Japan", region: "Asia", domestic: false, embassy: "https://www.mofa.go.jp/j_info/visit/visa" },
+  { code: "TPE", city: "Taipei", country: "Taiwan", region: "Asia", domestic: false, embassy: "https://visawebapp.boca.gov.tw" },
+  { code: "MNL", city: "Manila", country: "Philippines", region: "Asia", domestic: false, embassy: "https://evisa.gov.ph" },
+  { code: "SGN", city: "Ho Chi Minh City", country: "Vietnam", region: "Asia", domestic: false, embassy: "https://evisa.gov.vn" },
+  { code: "HAN", city: "Hanoi", country: "Vietnam", region: "Asia", domestic: false, embassy: "https://evisa.gov.vn" },
+  { code: "REP", city: "Siem Reap", country: "Cambodia", region: "Asia", domestic: false, embassy: "https://www.evisa.gov.kh" },
+  { code: "CMB", city: "Colombo", country: "Sri Lanka", region: "Asia", domestic: false, embassy: "https://www.eta.gov.lk" },
+  { code: "KTM", city: "Kathmandu", country: "Nepal", region: "Asia", domestic: false, embassy: "https://nepaliport.immigration.gov.np" },
+  { code: "MLE", city: "Malé", country: "Maldives", region: "Asia", domestic: false, embassy: "https://imuga.immigration.gov.mv" },
+  { code: "DOH", city: "Doha", country: "Qatar", region: "Asia", domestic: false, embassy: "https://portal.moi.gov.qa" },
+  { code: "AUH", city: "Abu Dhabi", country: "United Arab Emirates", region: "Asia", domestic: false, embassy: "https://u.ae/en/information-and-services/visa-and-emirates-id" },
+  { code: "IST", city: "Istanbul", country: "Türkiye", region: "Asia", domestic: false, embassy: "https://www.evisa.gov.tr" },
+  { code: "TLV", city: "Tel Aviv", country: "Israel", region: "Asia", domestic: false, embassy: "https://www.gov.il" },
+  { code: "RUH", city: "Riyadh", country: "Saudi Arabia", region: "Asia", domestic: false, embassy: "https://visa.visitsaudi.com" },
+  { code: "KHI", city: "Karachi", country: "Pakistan", region: "Asia", domestic: false, embassy: "https://visa.nadra.gov.pk" },
+  { code: "DAC", city: "Dhaka", country: "Bangladesh", region: "Asia", domestic: false, embassy: "https://www.visa.gov.bd" },
+  // Europe
+  { code: "AMS", city: "Amsterdam", country: "Netherlands", region: "Europe", domestic: false, embassy: "https://ind.nl" },
+  { code: "BCN", city: "Barcelona", country: "Spain", region: "Europe", domestic: false, embassy: "https://www.exteriores.gob.es" },
+  { code: "MAD", city: "Madrid", country: "Spain", region: "Europe", domestic: false, embassy: "https://www.exteriores.gob.es" },
+  { code: "FRA", city: "Frankfurt", country: "Germany", region: "Europe", domestic: false, embassy: "https://videx.diplo.de" },
+  { code: "BER", city: "Berlin", country: "Germany", region: "Europe", domestic: false, embassy: "https://videx.diplo.de" },
+  { code: "MUC", city: "Munich", country: "Germany", region: "Europe", domestic: false, embassy: "https://videx.diplo.de" },
+  { code: "ZRH", city: "Zurich", country: "Switzerland", region: "Europe", domestic: false, embassy: "https://www.sem.admin.ch" },
+  { code: "VIE", city: "Vienna", country: "Austria", region: "Europe", domestic: false, embassy: "https://www.bmeia.gv.at" },
+  { code: "PRG", city: "Prague", country: "Czechia", region: "Europe", domestic: false, embassy: "https://ipc.gov.cz" },
+  { code: "BUD", city: "Budapest", country: "Hungary", region: "Europe", domestic: false, embassy: "https://konzuliszolgalat.kormany.hu" },
+  { code: "ATH", city: "Athens", country: "Greece", region: "Europe", domestic: false, embassy: "https://www.mfa.gr" },
+  { code: "CPH", city: "Copenhagen", country: "Denmark", region: "Europe", domestic: false, embassy: "https://www.nyidanmark.dk" },
+  { code: "ARN", city: "Stockholm", country: "Sweden", region: "Europe", domestic: false, embassy: "https://www.migrationsverket.se" },
+  { code: "OSL", city: "Oslo", country: "Norway", region: "Europe", domestic: false, embassy: "https://www.udi.no" },
+  { code: "HEL", city: "Helsinki", country: "Finland", region: "Europe", domestic: false, embassy: "https://um.fi" },
+  { code: "KEF", city: "Reykjavik", country: "Iceland", region: "Europe", domestic: false, embassy: "https://utl.is" },
+  { code: "DUB", city: "Dublin", country: "Ireland", region: "Europe", domestic: false, embassy: "https://www.irishimmigration.ie" },
+  { code: "EDI", city: "Edinburgh", country: "United Kingdom", region: "Europe", domestic: false, embassy: "https://www.gov.uk/browse/visas-immigration" },
+  { code: "WAW", city: "Warsaw", country: "Poland", region: "Europe", domestic: false, embassy: "https://www.gov.pl" },
+  { code: "OPO", city: "Porto", country: "Portugal", region: "Europe", domestic: false, embassy: "https://vistos.mne.gov.pt" },
+  { code: "MXP", city: "Milan", country: "Italy", region: "Europe", domestic: false, embassy: "https://vistoperitalia.esteri.it" },
+  { code: "VCE", city: "Venice", country: "Italy", region: "Europe", domestic: false, embassy: "https://vistoperitalia.esteri.it" },
+  { code: "SVO", city: "Moscow", country: "Russia", region: "Europe", domestic: false, embassy: "https://electronic-visa.kdmid.ru" },
+  // Africa
+  { code: "CAI", city: "Cairo", country: "Egypt", region: "Africa", domestic: false, embassy: "https://visa2egypt.gov.eg" },
+  { code: "NBO", city: "Nairobi", country: "Kenya", region: "Africa", domestic: false, embassy: "https://www.etakenya.go.ke" },
+  { code: "JRO", city: "Kilimanjaro", country: "Tanzania", region: "Africa", domestic: false, embassy: "https://visa.immigration.go.tz" },
+  { code: "JNB", city: "Johannesburg", country: "South Africa", region: "Africa", domestic: false, embassy: "https://www.dha.gov.za" },
+  { code: "CMN", city: "Casablanca", country: "Morocco", region: "Africa", domestic: false, embassy: "https://www.consulat.ma" },
+  { code: "LOS", city: "Lagos", country: "Nigeria", region: "Africa", domestic: false, embassy: "https://portal.immigration.gov.ng" },
+  { code: "ACC", city: "Accra", country: "Ghana", region: "Africa", domestic: false, embassy: "https://www.gis.gov.gh" },
+  { code: "ADD", city: "Addis Ababa", country: "Ethiopia", region: "Africa", domestic: false, embassy: "https://www.evisa.gov.et" },
+  { code: "MRU", city: "Port Louis", country: "Mauritius", region: "Africa", domestic: false, embassy: "https://passport.govmu.org" },
+  // North America
+  { code: "SFO", city: "San Francisco", country: "United States", region: "North America", domestic: true, embassy: "https://travel.state.gov" },
+  { code: "SEA", city: "Seattle", country: "United States", region: "North America", domestic: true, embassy: "https://travel.state.gov" },
+  { code: "BOS", city: "Boston", country: "United States", region: "North America", domestic: true, embassy: "https://travel.state.gov" },
+  { code: "LAS", city: "Las Vegas", country: "United States", region: "North America", domestic: true, embassy: "https://travel.state.gov" },
+  { code: "DEN", city: "Denver", country: "United States", region: "North America", domestic: true, embassy: "https://travel.state.gov" },
+  { code: "HNL", city: "Honolulu", country: "United States", region: "North America", domestic: true, embassy: "https://travel.state.gov" },
+  { code: "YYZ", city: "Toronto", country: "Canada", region: "North America", domestic: false, embassy: "https://www.canada.ca/en/immigration-refugees-citizenship.html" },
+  { code: "YVR", city: "Vancouver", country: "Canada", region: "North America", domestic: false, embassy: "https://www.canada.ca/en/immigration-refugees-citizenship.html" },
+  { code: "CUN", city: "Cancún", country: "Mexico", region: "North America", domestic: false, embassy: "https://www.inm.gob.mx" },
+  { code: "SJO", city: "San José", country: "Costa Rica", region: "North America", domestic: false, embassy: "https://www.migracion.go.cr" },
+  { code: "HAV", city: "Havana", country: "Cuba", region: "North America", domestic: false, embassy: "https://www.cubatravel.cu" },
+  { code: "PUJ", city: "Punta Cana", country: "Dominican Republic", region: "North America", domestic: false, embassy: "https://eticket.migracion.gob.do" },
+  // South America
+  { code: "GRU", city: "São Paulo", country: "Brazil", region: "South America", domestic: false, embassy: "https://www.gov.br/mre" },
+  { code: "EZE", city: "Buenos Aires", country: "Argentina", region: "South America", domestic: false, embassy: "https://www.argentina.gob.ar/interior/migraciones" },
+  { code: "SCL", city: "Santiago", country: "Chile", region: "South America", domestic: false, embassy: "https://serviciomigraciones.cl" },
+  { code: "BOG", city: "Bogotá", country: "Colombia", region: "South America", domestic: false, embassy: "https://www.cancilleria.gov.co" },
+  { code: "CUZ", city: "Cusco", country: "Peru", region: "South America", domestic: false, embassy: "https://www.gob.pe/migraciones" },
+  { code: "UIO", city: "Quito", country: "Ecuador", region: "South America", domestic: false, embassy: "https://www.cancilleria.gob.ec" },
+  { code: "MVD", city: "Montevideo", country: "Uruguay", region: "South America", domestic: false, embassy: "https://www.gub.uy" },
+  // Oceania
+  { code: "MEL", city: "Melbourne", country: "Australia", region: "Oceania", domestic: false, embassy: "https://immi.homeaffairs.gov.au" },
+  { code: "BNE", city: "Brisbane", country: "Australia", region: "Oceania", domestic: false, embassy: "https://immi.homeaffairs.gov.au" },
+  { code: "PER", city: "Perth", country: "Australia", region: "Oceania", domestic: false, embassy: "https://immi.homeaffairs.gov.au" },
+  { code: "ZQN", city: "Queenstown", country: "New Zealand", region: "Oceania", domestic: false, embassy: "https://www.immigration.govt.nz" },
+  { code: "NAN", city: "Nadi", country: "Fiji", region: "Oceania", domestic: false, embassy: "https://www.immigration.gov.fj" },
+  { code: "PPT", city: "Papeete", country: "French Polynesia", region: "Oceania", domestic: false, embassy: "https://www.polynesie-francaise.pref.gouv.fr" },
 ];
+
+/** Build an Airport entry for a city the user typed that isn't in our list. */
+export function customAirport(input: string): Airport {
+  const clean = input.trim().replace(/\s+/g, " ");
+  const code = clean.replace(/[^a-zA-Z]/g, "").slice(0, 3).toUpperCase() || "ANY";
+  return {
+    code,
+    city: clean,
+    country: "Custom search",
+    region: "Asia",
+    domestic: false,
+    embassy: "https://www.iatatravelcentre.com/passport-visa-health-travel-document-requirements.htm",
+  };
+}
+
+export function searchAirports(query: string, limit = 8): Airport[] {
+  const q = query.trim().toLowerCase();
+  if (!q) return AIRPORTS.slice(0, limit);
+  return AIRPORTS.filter(
+    (a) =>
+      a.city.toLowerCase().includes(q) ||
+      a.country.toLowerCase().includes(q) ||
+      a.code.toLowerCase().includes(q) ||
+      a.region.toLowerCase().includes(q),
+  ).slice(0, limit);
+}
 
 export type Flight = {
   id: string;
