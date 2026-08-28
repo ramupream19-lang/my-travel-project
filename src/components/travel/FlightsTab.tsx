@@ -19,63 +19,43 @@ import {
 type StopFilter = "all" | "direct" | "one";
 type Sort = "price-asc" | "price-desc" | "duration" | "value";
 
-function AirportInput({
+function AirportSelect({
   label,
   value,
-  onChange,
   onPick,
   placeholder,
 }: {
   label: string;
-  value: string;
-  onChange: (v: string) => void;
+  value: Airport | null;
   onPick: (a: Airport) => void;
   placeholder: string;
 }) {
-  const [focused, setFocused] = useState(false);
-  const matches = AIRPORTS.filter(
-    (a) =>
-      value.length > 0 &&
-      `${a.city} ${a.code} ${a.country}`.toLowerCase().includes(value.toLowerCase()),
-  ).slice(0, 5);
-
   return (
-    <div className="relative">
+    <div>
       <label className="mb-1 block text-[13px] text-muted-foreground">{label}</label>
-      <input
-        value={value}
-        placeholder={placeholder}
-        onFocus={() => setFocused(true)}
-        onBlur={() => setTimeout(() => setFocused(false), 150)}
-        onChange={(e) => onChange(e.target.value)}
-        className="h-11 w-full rounded-xl border border-input bg-card/80 px-4 text-[15px] outline-none focus:border-primary focus:ring-3 focus:ring-primary/10"
-      />
-      {focused && matches.length > 0 ? (
-        <ul className="absolute z-30 mt-1 w-full overflow-hidden rounded-xl border border-border bg-popover shadow-lg">
-          {matches.map((a) => (
-            <li key={a.code}>
-              <button
-                type="button"
-                onMouseDown={() => onPick(a)}
-                className="flex w-full items-center justify-between px-3 py-2 text-left text-[13px] hover:bg-accent"
-              >
-                <span>
-                  {a.city}
-                  <span className="text-muted-foreground"> · {a.country}</span>
-                </span>
-                <span className="font-semibold text-primary">{a.code}</span>
-              </button>
-            </li>
-          ))}
-        </ul>
-      ) : null}
+      <select
+        value={value?.code ?? ""}
+        onChange={(e) => {
+          const picked = AIRPORTS.find((a) => a.code === e.target.value);
+          if (picked) onPick(picked);
+        }}
+        className="h-11 w-full rounded-xl border border-input bg-card/80 px-3 text-[15px] outline-none focus:border-primary focus:ring-3 focus:ring-primary/10"
+      >
+        <option value="" disabled>
+          {placeholder}
+        </option>
+        {AIRPORTS.map((a) => (
+          <option key={a.code} value={a.code}>
+            {a.city} ({a.code}) · {a.country}
+          </option>
+        ))}
+      </select>
     </div>
   );
 }
 
+
 export function FlightsTab() {
-  const [fromText, setFromText] = useState("New York");
-  const [toText, setToText] = useState("");
   const [origin, setOrigin] = useState<Airport | null>(AIRPORTS[0] ?? null);
   const [destination, setDestination] = useState<Airport | null>(null);
   const [date, setDate] = useState("");
@@ -128,24 +108,20 @@ export function FlightsTab() {
   return (
     <div className="space-y-3">
       <GlassCard className="space-y-3">
-        <AirportInput
-          label="From"
-          value={fromText}
-          placeholder="Departure city or airport"
-          onChange={setFromText}
+        <AirportSelect
+          label="Source"
+          value={origin}
+          placeholder="Select departure airport"
           onPick={(a) => {
             setOrigin(a);
-            setFromText(`${a.city} (${a.code})`);
           }}
         />
-        <AirportInput
-          label="To"
-          value={toText}
-          placeholder="Arrival city or airport"
-          onChange={setToText}
+        <AirportSelect
+          label="Destination"
+          value={destination}
+          placeholder="Select arrival airport"
           onPick={(a) => {
             setDestination(a);
-            setToText(`${a.city} (${a.code})`);
             setVisaCleared(false);
             if (!a.domestic || intl) setVisaOpen(true);
           }}
@@ -153,6 +129,7 @@ export function FlightsTab() {
 
         <div>
           <label className="mb-1 block text-[13px] text-muted-foreground">Travel date</label>
+
           <input
             type="date"
             value={date}
