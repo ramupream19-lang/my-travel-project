@@ -162,19 +162,19 @@ export function FlightsTab() {
   return (
     <div className="space-y-3">
       <GlassCard className="space-y-3">
-        <AirportSelect
+        <AirportField
           label="Source"
           value={origin}
-          placeholder="Select departure airport"
-          onPick={(a) => {
+          placeholder="Type a city, e.g. Chennai"
+          onPick={(a: Airport) => {
             setOrigin(a);
           }}
         />
-        <AirportSelect
+        <AirportField
           label="Destination"
           value={destination}
-          placeholder="Select arrival airport"
-          onPick={(a) => {
+          placeholder="Type any city or country worldwide"
+          onPick={(a: Airport) => {
             setDestination(a);
             setVisaCleared(false);
             if (!a.domestic || intl) setVisaOpen(true);
