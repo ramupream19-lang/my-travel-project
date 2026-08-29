@@ -1,16 +1,20 @@
 import { useMemo, useState } from "react";
-import { ArrowRight, Filter, Search, X } from "lucide-react";
+import { ArrowRight, Check, Filter, Plane, Search, X } from "lucide-react";
 import { Slider } from "@/components/ui/slider";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Button } from "@/components/ui/button";
 import { toast } from "sonner";
 import { GlassCard } from "./PhoneShell";
 import { VisaModal } from "./VisaModal";
+import { TravelGuideCard } from "./TravelGuideCard";
+import { getTravelGuide } from "@/lib/travel-guides";
 import {
   AIRPORTS,
   REGIONS,
   TRIP_STYLES,
+  customAirport,
   generateFlights,
+  searchAirports,
   type Airport,
   type Region,
   type TripStyle,
@@ -19,7 +23,7 @@ import {
 type StopFilter = "all" | "direct" | "one";
 type Sort = "price-asc" | "price-desc" | "duration" | "value";
 
-function AirportSelect({
+function AirportField({
   label,
   value,
   onPick,
@@ -30,26 +34,76 @@ function AirportSelect({
   onPick: (a: Airport) => void;
   placeholder: string;
 }) {
+  const [query, setQuery] = useState("");
+  const [open, setOpen] = useState(false);
+
+  const matches = useMemo(() => (query.trim() ? searchAirports(query, 6) : []), [query]);
+  const typed = query.trim();
+
+  const choose = (a: Airport) => {
+    onPick(a);
+    setQuery("");
+    setOpen(false);
+  };
+
   return (
-    <div>
+    <div className="relative">
       <label className="mb-1 block text-[13px] text-muted-foreground">{label}</label>
-      <select
-        value={value?.code ?? ""}
+      <input
+        value={query}
         onChange={(e) => {
-          const picked = AIRPORTS.find((a) => a.code === e.target.value);
-          if (picked) onPick(picked);
+          setQuery(e.target.value);
+          setOpen(true);
         }}
+        onFocus={() => setOpen(true)}
+        onKeyDown={(e) => {
+          if (e.key === "Enter" && typed) {
+            e.preventDefault();
+            choose(matches[0] ?? customAirport(typed));
+          }
+        }}
+        placeholder={value ? `${value.city} (${value.code})` : placeholder}
         className="h-11 w-full rounded-xl border border-input bg-card/80 px-3 text-[15px] outline-none focus:border-primary focus:ring-3 focus:ring-primary/10"
-      >
-        <option value="" disabled>
-          {placeholder}
-        </option>
-        {AIRPORTS.map((a) => (
-          <option key={a.code} value={a.code}>
-            {a.city} ({a.code}) · {a.country}
-          </option>
-        ))}
-      </select>
+      />
+
+      {value && !open ? (
+        <p className="mt-1 flex items-center gap-1 text-[12px] text-primary">
+          <Check className="h-3 w-3" /> {value.city} ({value.code}) · {value.country}
+        </p>
+      ) : null}
+
+      {open && typed ? (
+        <div className="absolute z-30 mt-1 w-full overflow-hidden rounded-xl border border-glass-border bg-card shadow-lg">
+          <p className="border-b border-border px-3 py-2 text-[12px] text-subtle">
+            {matches.length ? "Confirm the airport" : "No airport in our list — use your own"}
+          </p>
+          {matches.map((a) => (
+            <button
+              key={a.code}
+              type="button"
+              onClick={() => choose(a)}
+              className="tap flex w-full items-center gap-2 px-3 py-2 text-left text-[13px] hover:bg-muted"
+            >
+              <Plane className="h-3.5 w-3.5 text-primary" />
+              <span>
+                <span className="font-semibold">
+                  {a.city} ({a.code})
+                </span>
+                <span className="block text-[12px] text-subtle">
+                  {a.country} · {a.region}
+                </span>
+              </span>
+            </button>
+          ))}
+          <button
+            type="button"
+            onClick={() => choose(customAirport(typed))}
+            className="tap w-full border-t border-border px-3 py-2 text-left text-[13px] font-semibold text-primary hover:bg-muted"
+          >
+            Use “{typed}” as {label.toLowerCase()}
+          </button>
+        </div>
+      ) : null}
     </div>
   );
 }
@@ -108,19 +162,19 @@ export function FlightsTab() {
   return (
     <div className="space-y-3">
       <GlassCard className="space-y-3">
-        <AirportSelect
+        <AirportField
           label="Source"
           value={origin}
-          placeholder="Select departure airport"
-          onPick={(a) => {
+          placeholder="Type a city, e.g. Chennai"
+          onPick={(a: Airport) => {
             setOrigin(a);
           }}
         />
-        <AirportSelect
+        <AirportField
           label="Destination"
           value={destination}
-          placeholder="Select arrival airport"
-          onPick={(a) => {
+          placeholder="Type any city or country worldwide"
+          onPick={(a: Airport) => {
             setDestination(a);
             setVisaCleared(false);
             if (!a.domestic || intl) setVisaOpen(true);
