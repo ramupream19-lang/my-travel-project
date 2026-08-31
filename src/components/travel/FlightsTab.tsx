@@ -115,6 +115,7 @@ export function FlightsTab() {
   const [date, setDate] = useState("");
   const [adults, setAdults] = useState(1);
   const [children, setChildren] = useState(0);
+  const [infants, setInfants] = useState(0);
   const [intl, setIntl] = useState(true);
 
   const [visaOpen, setVisaOpen] = useState(false);
@@ -128,12 +129,34 @@ export function FlightsTab() {
   const [region, setRegion] = useState<Region>("Everywhere");
   const [sort, setSort] = useState<Sort>("price-asc");
 
-  const passengers = adults + children;
+  // Infants travel on lap at 10% of the adult fare.
+  const passengers = adults + children + infants * 0.1;
+  const paxLabel = `${adults} adult${adults > 1 ? "s" : ""}${children ? `, ${children} child${children > 1 ? "ren" : ""}` : ""}${infants ? `, ${infants} infant${infants > 1 ? "s" : ""}` : ""}`;
 
   const flights = useMemo(
     () => generateFlights(origin?.code ?? "JFK", destination?.code ?? "DXB"),
     [origin, destination],
   );
+
+  const guide = useMemo(
+    () => getTravelGuide(destination?.city ?? destination?.country ?? ""),
+    [destination],
+  );
+
+  const domesticRoutes = useMemo(() => {
+    if (!origin) return [];
+    return AIRPORTS.filter((a) => a.country === origin.country && a.code !== origin.code)
+      .slice(0, 6)
+      .map((a) => {
+        const all = generateFlights(origin.code, a.code);
+        const options = all.filter((f) => f.stops === 0);
+        const seed = a.code.split("").reduce((n, c) => n + c.charCodeAt(0), 0);
+        const base = (options.length ? options : all)[seed % (options.length || all.length)]!;
+        // Domestic hops are shorter and cheaper than the long-haul base fare.
+        const flight = { ...base, price: Math.max(45, Math.round(base.price * 0.4)) };
+        return { airport: a, flight };
+      });
+  }, [origin]);
 
   const filtered = useMemo(() => {
     let list = flights.filter((f) => f.price * passengers <= budget);
@@ -192,18 +215,22 @@ export function FlightsTab() {
           />
         </div>
 
-        <div className="grid grid-cols-2 gap-3">
+        <div className="grid grid-cols-3 gap-2">
           {[
-            { label: "Adults", value: adults, set: setAdults, min: 1 },
-            { label: "Children", value: children, set: setChildren, min: 0 },
+            { label: "Adults", hint: "12+ yrs", value: adults, set: setAdults, min: 1 },
+            { label: "Children", hint: "2–11 yrs", value: children, set: setChildren, min: 0 },
+            { label: "Infants", hint: "under 2", value: infants, set: setInfants, min: 0 },
           ].map((c) => (
             <div key={c.label}>
-              <label className="mb-1 block text-[13px] text-muted-foreground">{c.label}</label>
-              <div className="flex h-11 items-center justify-between rounded-xl border border-input bg-card/80 px-3">
+              <label className="mb-1 block text-[13px] text-muted-foreground">
+                {c.label} <span className="text-[11px] text-subtle">({c.hint})</span>
+              </label>
+              <div className="flex h-11 items-center justify-between rounded-xl border border-input bg-card/80 px-2">
                 <button
                   type="button"
                   className="tap text-[18px] font-semibold text-primary"
                   onClick={() => c.set(Math.max(c.min, c.value - 1))}
+                  aria-label={`Remove ${c.label}`}
                 >
                   −
                 </button>
@@ -211,7 +238,8 @@ export function FlightsTab() {
                 <button
                   type="button"
                   className="tap text-[18px] font-semibold text-primary"
-                  onClick={() => c.set(c.value + 1)}
+                  onClick={() => c.set(c.label === "Infants" ? Math.min(adults, c.value + 1) : c.value + 1)}
+                  aria-label={`Add ${c.label}`}
                 >
                   +
                 </button>
@@ -219,6 +247,9 @@ export function FlightsTab() {
             </div>
           ))}
         </div>
+        <p className="text-[12px] text-subtle">
+          {paxLabel} · infants travel on lap at 10% of the fare (max 1 per adult)
+        </p>
 
         <div className="flex rounded-xl bg-muted p-1">
           {[
@@ -255,6 +286,45 @@ export function FlightsTab() {
           <Search className="mr-1 h-4 w-4" /> Search flights
         </Button>
       </GlassCard>
+
+      {/* POPULAR DOMESTIC FLIGHTS */}
+      {domesticRoutes.length ? (
+        <GlassCard className="space-y-3">
+          <p className="text-[16px] font-semibold">
+            Popular domestic flights from {origin?.city}
+          </p>
+          <div className="space-y-2">
+            {domesticRoutes.map(({ airport, flight }) => (
+              <button
+                key={airport.code}
+                type="button"
+                onClick={() => {
+                  setDestination(airport);
+                  setIntl(false);
+                  setSearched(true);
+                }}
+                className="tap flex w-full items-center justify-between rounded-xl bg-muted/70 p-3 text-left"
+              >
+                <span>
+                  <span className="block text-[14px] font-semibold">
+                    {origin?.code} → {airport.code} · {airport.city}
+                  </span>
+                  <span className="block text-[12px] text-subtle">
+                    {flight.airline} · {flight.duration} ·{" "}
+                    {flight.stops === 0 ? "Direct" : `${flight.stops} stop`}
+                  </span>
+                </span>
+                <span className="text-[15px] font-bold text-primary">from ${flight.price}</span>
+              </button>
+            ))}
+          </div>
+        </GlassCard>
+      ) : null}
+
+      {/* DESTINATION TRAVEL GUIDE */}
+      {guide ? <TravelGuideCard guide={guide} /> : null}
+
+
 
       {/* FILTERS */}
       <GlassCard className="space-y-4">

@@ -1,21 +1,58 @@
 import { useState } from "react";
 import { Send } from "lucide-react";
 import { GlassCard } from "./PhoneShell";
-import { DESTINATIONS, STAYS, CARS, type Destination } from "@/lib/travel-data";
+import { TravelGuideCard } from "./TravelGuideCard";
+import { getTravelGuide, type TravelGuide } from "@/lib/travel-guides";
+import { AIRPORTS, DESTINATIONS, STAYS, CARS, type Destination } from "@/lib/travel-data";
 
-type Msg = { role: "user" | "ai"; text: string; picks?: Destination[] };
+type Msg = { role: "user" | "ai"; text: string; picks?: Destination[]; guide?: TravelGuide };
 
 const SUGGESTIONS = [
+  "India",
+  "Popular travel plans in Japan",
+  "Things to do in Mumbai",
   "Show me beach destinations under $1000 for 5 days",
-  "Best food cities in Asia",
-  "Adventure trips for couples",
-  "Family-friendly destinations with kids",
 ];
+
+/** Find a country or city name mentioned anywhere in the query. */
+function detectPlace(query: string): string | null {
+  const q = query.toLowerCase();
+  const names = new Set<string>();
+  for (const a of AIRPORTS) {
+    names.add(a.city.toLowerCase());
+    names.add(a.country.toLowerCase());
+  }
+  for (const d of DESTINATIONS) {
+    names.add(d.name.toLowerCase());
+    names.add(d.country.toLowerCase());
+  }
+  let best: string | null = null;
+  for (const n of names) {
+    if (n.length < 3) continue;
+    if (q === n || q.includes(n)) {
+      if (!best || n.length > best.length) best = n;
+    }
+  }
+  return best;
+}
 
 function answer(query: string): Msg {
   const q = query.toLowerCase();
   const budgetMatch = q.match(/\$?\s?(\d{3,5})/);
   const budget = budgetMatch?.[1] ? Number(budgetMatch[1]) : undefined;
+
+  // Country / city question → full travel guide for that place.
+  const place = detectPlace(query);
+  if (place) {
+    const guide = getTravelGuide(place);
+    if (guide) {
+      return {
+        role: "ai",
+        text: `Here are the most popular travel plans for ${guide.place} — top attractions, where to stay, a ready-made itinerary, best time to visit, flight pricing and local tips.`,
+        guide,
+      };
+    }
+  }
 
   let picks = DESTINATIONS.slice();
   if (budget) picks = picks.filter((d) => d.price <= budget);
@@ -103,6 +140,11 @@ export function AiTab() {
                     </p>
                   </div>
                 ))}
+              </div>
+            ) : null}
+            {m.guide ? (
+              <div className="mt-3">
+                <TravelGuideCard guide={m.guide} />
               </div>
             ) : null}
           </div>

@@ -221,9 +221,12 @@ function seeded(n: number) {
   return x - Math.floor(x);
 }
 
+const codeSeed = (s: string) =>
+  s.toUpperCase().split("").reduce((acc, c, i) => acc + c.charCodeAt(0) * (i + 3), 0);
+
 export function generateFlights(from: string, to: string): Flight[] {
   return Array.from({ length: 18 }, (_, i) => {
-    const r = seeded(i + from.length * 7 + to.length * 13);
+    const r = seeded(i * 31 + codeSeed(from) * 7 + codeSeed(to) * 13);
     const [airline, logo] = AIRLINES[i % AIRLINES.length]!;
     const stops = r > 0.72 ? 2 : r > 0.42 ? 1 : 0;
     const depHour = (5 + i) % 24;
