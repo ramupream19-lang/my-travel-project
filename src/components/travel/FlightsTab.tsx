@@ -212,18 +212,22 @@ export function FlightsTab() {
           />
         </div>
 
-        <div className="grid grid-cols-2 gap-3">
+        <div className="grid grid-cols-3 gap-2">
           {[
-            { label: "Adults", value: adults, set: setAdults, min: 1 },
-            { label: "Children", value: children, set: setChildren, min: 0 },
+            { label: "Adults", hint: "12+ yrs", value: adults, set: setAdults, min: 1 },
+            { label: "Children", hint: "2–11 yrs", value: children, set: setChildren, min: 0 },
+            { label: "Infants", hint: "under 2", value: infants, set: setInfants, min: 0 },
           ].map((c) => (
             <div key={c.label}>
-              <label className="mb-1 block text-[13px] text-muted-foreground">{c.label}</label>
-              <div className="flex h-11 items-center justify-between rounded-xl border border-input bg-card/80 px-3">
+              <label className="mb-1 block text-[13px] text-muted-foreground">
+                {c.label} <span className="text-[11px] text-subtle">({c.hint})</span>
+              </label>
+              <div className="flex h-11 items-center justify-between rounded-xl border border-input bg-card/80 px-2">
                 <button
                   type="button"
                   className="tap text-[18px] font-semibold text-primary"
                   onClick={() => c.set(Math.max(c.min, c.value - 1))}
+                  aria-label={`Remove ${c.label}`}
                 >
                   −
                 </button>
@@ -231,7 +235,8 @@ export function FlightsTab() {
                 <button
                   type="button"
                   className="tap text-[18px] font-semibold text-primary"
-                  onClick={() => c.set(c.value + 1)}
+                  onClick={() => c.set(c.label === "Infants" ? Math.min(adults, c.value + 1) : c.value + 1)}
+                  aria-label={`Add ${c.label}`}
                 >
                   +
                 </button>
@@ -239,6 +244,9 @@ export function FlightsTab() {
             </div>
           ))}
         </div>
+        <p className="text-[12px] text-subtle">
+          {paxLabel} · infants travel on lap at 10% of the fare (max 1 per adult)
+        </p>
 
         <div className="flex rounded-xl bg-muted p-1">
           {[
