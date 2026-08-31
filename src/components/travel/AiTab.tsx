@@ -41,6 +41,19 @@ function answer(query: string): Msg {
   const budgetMatch = q.match(/\$?\s?(\d{3,5})/);
   const budget = budgetMatch?.[1] ? Number(budgetMatch[1]) : undefined;
 
+  // Country / city question → full travel guide for that place.
+  const place = detectPlace(query);
+  if (place) {
+    const guide = getTravelGuide(place);
+    if (guide) {
+      return {
+        role: "ai",
+        text: `Here are the most popular travel plans for ${guide.place} — top attractions, where to stay, a ready-made itinerary, best time to visit, flight pricing and local tips.`,
+        guide,
+      };
+    }
+  }
+
   let picks = DESTINATIONS.slice();
   if (budget) picks = picks.filter((d) => d.price <= budget);
   const styleHints: [string, string][] = [
