@@ -142,6 +142,11 @@ export function AiTab() {
                 ))}
               </div>
             ) : null}
+            {m.guide ? (
+              <div className="mt-3">
+                <TravelGuideCard guide={m.guide} />
+              </div>
+            ) : null}
           </div>
         </div>
       ))}
