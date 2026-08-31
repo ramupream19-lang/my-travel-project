@@ -115,6 +115,7 @@ export function FlightsTab() {
   const [date, setDate] = useState("");
   const [adults, setAdults] = useState(1);
   const [children, setChildren] = useState(0);
+  const [infants, setInfants] = useState(0);
   const [intl, setIntl] = useState(true);
 
   const [visaOpen, setVisaOpen] = useState(false);
@@ -128,12 +129,31 @@ export function FlightsTab() {
   const [region, setRegion] = useState<Region>("Everywhere");
   const [sort, setSort] = useState<Sort>("price-asc");
 
-  const passengers = adults + children;
+  // Infants travel on lap at 10% of the adult fare.
+  const passengers = adults + children + infants * 0.1;
+  const paxLabel = `${adults} adult${adults > 1 ? "s" : ""}${children ? `, ${children} child${children > 1 ? "ren" : ""}` : ""}${infants ? `, ${infants} infant${infants > 1 ? "s" : ""}` : ""}`;
 
   const flights = useMemo(
     () => generateFlights(origin?.code ?? "JFK", destination?.code ?? "DXB"),
     [origin, destination],
   );
+
+  const guide = useMemo(
+    () => getTravelGuide(destination?.city ?? destination?.country ?? ""),
+    [destination],
+  );
+
+  const domesticRoutes = useMemo(() => {
+    if (!origin) return [];
+    return AIRPORTS.filter((a) => a.country === origin.country && a.code !== origin.code)
+      .slice(0, 6)
+      .map((a) => {
+        const cheapest = [...generateFlights(origin.code, a.code)].sort(
+          (x, y) => x.price - y.price,
+        )[0]!;
+        return { airport: a, flight: cheapest };
+      });
+  }, [origin]);
 
   const filtered = useMemo(() => {
     let list = flights.filter((f) => f.price * passengers <= budget);
