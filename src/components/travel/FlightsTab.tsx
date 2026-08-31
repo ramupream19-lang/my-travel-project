@@ -284,6 +284,45 @@ export function FlightsTab() {
         </Button>
       </GlassCard>
 
+      {/* POPULAR DOMESTIC FLIGHTS */}
+      {domesticRoutes.length ? (
+        <GlassCard className="space-y-3">
+          <p className="text-[16px] font-semibold">
+            Popular domestic flights from {origin?.city}
+          </p>
+          <div className="space-y-2">
+            {domesticRoutes.map(({ airport, flight }) => (
+              <button
+                key={airport.code}
+                type="button"
+                onClick={() => {
+                  setDestination(airport);
+                  setIntl(false);
+                  setSearched(true);
+                }}
+                className="tap flex w-full items-center justify-between rounded-xl bg-muted/70 p-3 text-left"
+              >
+                <span>
+                  <span className="block text-[14px] font-semibold">
+                    {origin?.code} → {airport.code} · {airport.city}
+                  </span>
+                  <span className="block text-[12px] text-subtle">
+                    {flight.airline} · {flight.duration} ·{" "}
+                    {flight.stops === 0 ? "Direct" : `${flight.stops} stop`}
+                  </span>
+                </span>
+                <span className="text-[15px] font-bold text-primary">from ${flight.price}</span>
+              </button>
+            ))}
+          </div>
+        </GlassCard>
+      ) : null}
+
+      {/* DESTINATION TRAVEL GUIDE */}
+      {guide ? <TravelGuideCard guide={guide} /> : null}
+
+
+
       {/* FILTERS */}
       <GlassCard className="space-y-4">
         <button
