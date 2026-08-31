@@ -148,10 +148,13 @@ export function FlightsTab() {
     return AIRPORTS.filter((a) => a.country === origin.country && a.code !== origin.code)
       .slice(0, 6)
       .map((a) => {
-        const options = generateFlights(origin.code, a.code);
+        const all = generateFlights(origin.code, a.code);
+        const options = all.filter((f) => f.stops === 0);
         const seed = a.code.split("").reduce((n, c) => n + c.charCodeAt(0), 0);
-        const pick = options[seed % options.length]!;
-        return { airport: a, flight: pick };
+        const base = (options.length ? options : all)[seed % (options.length || all.length)]!;
+        // Domestic hops are shorter and cheaper than the long-haul base fare.
+        const flight = { ...base, price: Math.max(45, Math.round(base.price * 0.4)) };
+        return { airport: a, flight };
       });
   }, [origin]);
 
