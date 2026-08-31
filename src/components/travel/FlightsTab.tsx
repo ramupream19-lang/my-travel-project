@@ -148,10 +148,10 @@ export function FlightsTab() {
     return AIRPORTS.filter((a) => a.country === origin.country && a.code !== origin.code)
       .slice(0, 6)
       .map((a) => {
-        const cheapest = [...generateFlights(origin.code, a.code)].sort(
-          (x, y) => x.price - y.price,
-        )[0]!;
-        return { airport: a, flight: cheapest };
+        const options = generateFlights(origin.code, a.code);
+        const seed = a.code.split("").reduce((n, c) => n + c.charCodeAt(0), 0);
+        const pick = options[seed % options.length]!;
+        return { airport: a, flight: pick };
       });
   }, [origin]);
 
