@@ -520,7 +520,7 @@ export function FlightsTab() {
                 <button
                   type="button"
                   className="gradient-primary tap h-11 rounded-xl px-4 text-[13px] font-semibold text-primary-foreground"
-                  onClick={() => toast.success(`Booked ${f.airline} ${f.flightNumber}`)}
+                  onClick={() => setSelected(f)}
                 >
                   Book
                 </button>
