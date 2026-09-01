@@ -16,9 +16,11 @@ import {
   generateFlights,
   searchAirports,
   type Airport,
+  type Flight,
   type Region,
   type TripStyle,
 } from "@/lib/travel-data";
+import { PassengerDetails } from "./PassengerDetails";
 
 type StopFilter = "all" | "direct" | "one";
 type Sort = "price-asc" | "price-desc" | "duration" | "value";
@@ -128,6 +130,7 @@ export function FlightsTab() {
   const [styles, setStyles] = useState<TripStyle[]>([]);
   const [region, setRegion] = useState<Region>("Everywhere");
   const [sort, setSort] = useState<Sort>("price-asc");
+  const [selected, setSelected] = useState<Flight | null>(null);
 
   // Infants travel on lap at 10% of the adult fare.
   const passengers = adults + children + infants * 0.1;
@@ -143,19 +146,25 @@ export function FlightsTab() {
     [destination],
   );
 
-  const domesticRoutes = useMemo(() => {
-    if (!origin) return [];
-    return AIRPORTS.filter((a) => a.country === origin.country && a.code !== origin.code)
-      .slice(0, 6)
-      .map((a) => {
-        const all = generateFlights(origin.code, a.code);
-        const options = all.filter((f) => f.stops === 0);
-        const seed = a.code.split("").reduce((n, c) => n + c.charCodeAt(0), 0);
-        const base = (options.length ? options : all)[seed % (options.length || all.length)]!;
-        // Domestic hops are shorter and cheaper than the long-haul base fare.
-        const flight = { ...base, price: Math.max(45, Math.round(base.price * 0.4)) };
-        return { airport: a, flight };
-      });
+  const buildRoutes = (from: Airport, list: Airport[], factor: number) =>
+    list.slice(0, 5).map((a) => {
+      const all = generateFlights(from.code, a.code);
+      const options = all.filter((f) => f.stops === 0);
+      const seed = a.code.split("").reduce((n, c) => n + c.charCodeAt(0), 0);
+      const base = (options.length ? options : all)[seed % (options.length || all.length)]!;
+      const flight = { ...base, price: Math.max(45, Math.round(base.price * factor)) };
+      return { airport: a, flight };
+    });
+
+  // Both domestic hops and international routes are always offered.
+  const popularRoutes = useMemo(() => {
+    if (!origin) return { domestic: [], international: [] };
+    const same = AIRPORTS.filter((a) => a.country === origin.country && a.code !== origin.code);
+    const other = AIRPORTS.filter((a) => a.country !== origin.country);
+    return {
+      domestic: buildRoutes(origin, same, 0.4),
+      international: buildRoutes(origin, other, 1),
+    };
   }, [origin]);
 
   const filtered = useMemo(() => {
@@ -181,6 +190,24 @@ export function FlightsTab() {
 
   const toggleStyle = (s: TripStyle) =>
     setStyles((prev) => (prev.includes(s) ? prev.filter((x) => x !== s) : [...prev, s]));
+
+  if (selected) {
+    return (
+      <PassengerDetails
+        flight={selected}
+        counts={{ adults, children, infants }}
+        total={Math.round(selected.price * passengers)}
+        international={intl}
+        onBack={() => setSelected(null)}
+        onConfirm={() => {
+          toast.success(`Passenger details saved — ${selected.airline} ${selected.flightNumber}`, {
+            description: "Booking confirmed. Track it under My Bookings.",
+          });
+          setSelected(null);
+        }}
+      />
+    );
+  }
 
   return (
     <div className="space-y-3">
@@ -287,37 +314,48 @@ export function FlightsTab() {
         </Button>
       </GlassCard>
 
-      {/* POPULAR DOMESTIC FLIGHTS */}
-      {domesticRoutes.length ? (
-        <GlassCard className="space-y-3">
-          <p className="text-[16px] font-semibold">
-            Popular domestic flights from {origin?.city}
-          </p>
-          <div className="space-y-2">
-            {domesticRoutes.map(({ airport, flight }) => (
-              <button
-                key={airport.code}
-                type="button"
-                onClick={() => {
-                  setDestination(airport);
-                  setIntl(false);
-                  setSearched(true);
-                }}
-                className="tap flex w-full items-center justify-between rounded-xl bg-muted/70 p-3 text-left"
-              >
-                <span>
-                  <span className="block text-[14px] font-semibold">
-                    {origin?.code} → {airport.code} · {airport.city}
-                  </span>
-                  <span className="block text-[12px] text-subtle">
-                    {flight.airline} · {flight.duration} ·{" "}
-                    {flight.stops === 0 ? "Direct" : `${flight.stops} stop`}
-                  </span>
-                </span>
-                <span className="text-[15px] font-bold text-primary">from ${flight.price}</span>
-              </button>
-            ))}
-          </div>
+      {/* POPULAR FLIGHTS — DOMESTIC + INTERNATIONAL */}
+      {popularRoutes.domestic.length || popularRoutes.international.length ? (
+        <GlassCard className="space-y-4">
+          <p className="text-[16px] font-semibold">Popular flights from {origin?.city}</p>
+          {(
+            [
+              ["Domestic", popularRoutes.domestic, false],
+              ["International", popularRoutes.international, true],
+            ] as const
+          ).map(([heading, list, isIntl]) =>
+            list.length ? (
+              <div key={heading} className="space-y-2">
+                <p className="text-[13px] font-semibold text-muted-foreground">{heading}</p>
+                {list.map(({ airport, flight }) => (
+                  <button
+                    key={airport.code}
+                    type="button"
+                    onClick={() => {
+                      setDestination(airport);
+                      setIntl(isIntl);
+                      setVisaCleared(!isIntl);
+                      setSearched(true);
+                    }}
+                    className="tap flex w-full items-center justify-between rounded-xl bg-muted/70 p-3 text-left"
+                  >
+                    <span>
+                      <span className="block text-[14px] font-semibold">
+                        {origin?.code} → {airport.code} · {airport.city}
+                      </span>
+                      <span className="block text-[12px] text-subtle">
+                        {flight.airline} · {flight.duration} ·{" "}
+                        {flight.stops === 0 ? "Direct" : `${flight.stops} stop`}
+                      </span>
+                    </span>
+                    <span className="text-[15px] font-bold text-primary">
+                      from ${flight.price}
+                    </span>
+                  </button>
+                ))}
+              </div>
+            ) : null,
+          )}
         </GlassCard>
       ) : null}
 
@@ -503,9 +541,9 @@ export function FlightsTab() {
                 <button
                   type="button"
                   className="gradient-primary tap h-11 rounded-xl px-4 text-[13px] font-semibold text-primary-foreground"
-                  onClick={() => toast.success(`Booked ${f.airline} ${f.flightNumber}`)}
+                  onClick={() => setSelected(f)}
                 >
-                  Book
+                  Select
                 </button>
               </div>
             </div>
