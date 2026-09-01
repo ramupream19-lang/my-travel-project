@@ -216,6 +216,106 @@ const AIRLINES: [string, string][] = [
   ["Turkish Airlines", "🇹🇷"],
 ];
 
+// Carriers that actually operate domestic routes inside a country.
+export const COUNTRY_AIRLINES: Record<string, [string, string][]> = {
+  India: [
+    ["IndiGo", "🇮🇳"],
+    ["Vistara", "🇮🇳"],
+    ["SpiceJet", "🇮🇳"],
+    ["Air India", "🇮🇳"],
+    ["Akasa Air", "🇮🇳"],
+    ["Air India Express", "🇮🇳"],
+  ],
+  "South Africa": [
+    ["FlySafair", "🇿🇦"],
+    ["South African Airways", "🇿🇦"],
+    ["Airlink", "🇿🇦"],
+    ["CemAir", "🇿🇦"],
+    ["LIFT", "🇿🇦"],
+  ],
+  "United States": [
+    ["Delta", "🇺🇸"],
+    ["American Airlines", "🇺🇸"],
+    ["United", "🇺🇸"],
+    ["Southwest", "🇺🇸"],
+    ["JetBlue", "🇺🇸"],
+  ],
+  "United Kingdom": [
+    ["British Airways", "🇬🇧"],
+    ["easyJet", "🇬🇧"],
+    ["Loganair", "🇬🇧"],
+  ],
+  Australia: [
+    ["Qantas", "🇦🇺"],
+    ["Virgin Australia", "🇦🇺"],
+    ["Jetstar", "🇦🇺"],
+    ["Rex", "🇦🇺"],
+  ],
+  Japan: [
+    ["ANA", "🇯🇵"],
+    ["Japan Airlines", "🇯🇵"],
+    ["Skymark", "🇯🇵"],
+    ["Peach", "🇯🇵"],
+  ],
+  China: [
+    ["Air China", "🇨🇳"],
+    ["China Eastern", "🇨🇳"],
+    ["China Southern", "🇨🇳"],
+    ["Hainan Airlines", "🇨🇳"],
+  ],
+  Brazil: [
+    ["LATAM Brasil", "🇧🇷"],
+    ["GOL", "🇧🇷"],
+    ["Azul", "🇧🇷"],
+  ],
+  Indonesia: [
+    ["Garuda Indonesia", "🇮🇩"],
+    ["Lion Air", "🇮🇩"],
+    ["Citilink", "🇮🇩"],
+  ],
+  Spain: [
+    ["Iberia", "🇪🇸"],
+    ["Vueling", "🇪🇸"],
+    ["Air Europa", "🇪🇸"],
+  ],
+  Germany: [
+    ["Lufthansa", "🇩🇪"],
+    ["Eurowings", "🇩🇪"],
+  ],
+  France: [
+    ["Air France", "🇫🇷"],
+    ["Transavia France", "🇫🇷"],
+  ],
+  Italy: [
+    ["ITA Airways", "🇮🇹"],
+    ["Aeroitalia", "🇮🇹"],
+  ],
+  Canada: [
+    ["Air Canada", "🇨🇦"],
+    ["WestJet", "🇨🇦"],
+    ["Porter Airlines", "🇨🇦"],
+  ],
+  Mexico: [
+    ["Aeroméxico", "🇲🇽"],
+    ["Volaris", "🇲🇽"],
+    ["VivaAerobus", "🇲🇽"],
+  ],
+  Thailand: [
+    ["Thai Airways", "🇹🇭"],
+    ["Bangkok Airways", "🇹🇭"],
+    ["Thai AirAsia", "🇹🇭"],
+  ],
+  "South Korea": [
+    ["Korean Air", "🇰🇷"],
+    ["Asiana Airlines", "🇰🇷"],
+    ["Jeju Air", "🇰🇷"],
+  ],
+  Vietnam: [
+    ["Vietnam Airlines", "🇻🇳"],
+    ["VietJet Air", "🇻🇳"],
+  ],
+};
+
 function seeded(n: number) {
   const x = Math.sin(n * 9973) * 10000;
   return x - Math.floor(x);
@@ -224,33 +324,56 @@ function seeded(n: number) {
 const codeSeed = (s: string) =>
   s.toUpperCase().split("").reduce((acc, c, i) => acc + c.charCodeAt(0) * (i + 3), 0);
 
+const countryOf = (code: string) =>
+  AIRPORTS.find((a) => a.code === code.toUpperCase())?.country ?? "";
+
 export function generateFlights(from: string, to: string): Flight[] {
+  const fromCountry = countryOf(from);
+  const toCountry = countryOf(to);
+  const isDomestic = !!fromCountry && fromCountry === toCountry;
+  const pool =
+    (isDomestic ? COUNTRY_AIRLINES[fromCountry] : undefined) ??
+    (fromCountry && COUNTRY_AIRLINES[fromCountry]
+      ? [...COUNTRY_AIRLINES[fromCountry]!, ...AIRLINES]
+      : AIRLINES);
+
   return Array.from({ length: 18 }, (_, i) => {
     const r = seeded(i * 31 + codeSeed(from) * 7 + codeSeed(to) * 13);
-    const [airline, logo] = AIRLINES[i % AIRLINES.length]!;
-    const stops = r > 0.72 ? 2 : r > 0.42 ? 1 : 0;
+    const [airline, logo] = pool[i % pool.length]!;
+    const stops = isDomestic ? (r > 0.75 ? 1 : 0) : r > 0.72 ? 2 : r > 0.42 ? 1 : 0;
     const depHour = (5 + i) % 24;
-    const durH = 3 + Math.round(r * 12) + stops * 2;
+    const durH = isDomestic
+      ? 1 + Math.round(r * 2) + stops
+      : 3 + Math.round(r * 12) + stops * 2;
     const arrHour = (depHour + durH) % 24;
     const pad = (n: number) => String(n).padStart(2, "0");
     return {
       id: `${from}-${to}-${i}`,
       airline,
       logo,
-      flightNumber: `${airline.slice(0, 2).toUpperCase()}${100 + i * 7}`,
+      flightNumber: `${airline.replace(/[^A-Za-z]/g, "").slice(0, 2).toUpperCase()}${100 + i * 7}`,
       from,
       to,
       depart: `${pad(depHour)}:${pad(Math.round(r * 5) * 10)}`,
       arrive: `${pad(arrHour)}:${pad(Math.round(r * 4) * 10)}`,
       duration: `${durH}h ${Math.round(r * 55)}m`,
       stops,
-      price: Math.round(180 + r * 1400 + stops * -60),
+      price: isDomestic
+        ? Math.round(45 + r * 220 + stops * 15)
+        : Math.round(180 + r * 1400 + stops * -60),
       seatsLeft: 1 + Math.round(r * 24),
-      aircraft: r > 0.5 ? "Boeing 777" : "Airbus A350",
+      aircraft: isDomestic
+        ? r > 0.5
+          ? "Airbus A320neo"
+          : "Boeing 737"
+        : r > 0.5
+          ? "Boeing 777"
+          : "Airbus A350",
       refundable: r > 0.55,
     };
   });
 }
+
 
 export type Destination = {
   id: string;
