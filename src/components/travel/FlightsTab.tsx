@@ -143,19 +143,25 @@ export function FlightsTab() {
     [destination],
   );
 
-  const domesticRoutes = useMemo(() => {
-    if (!origin) return [];
-    return AIRPORTS.filter((a) => a.country === origin.country && a.code !== origin.code)
-      .slice(0, 6)
-      .map((a) => {
-        const all = generateFlights(origin.code, a.code);
-        const options = all.filter((f) => f.stops === 0);
-        const seed = a.code.split("").reduce((n, c) => n + c.charCodeAt(0), 0);
-        const base = (options.length ? options : all)[seed % (options.length || all.length)]!;
-        // Domestic hops are shorter and cheaper than the long-haul base fare.
-        const flight = { ...base, price: Math.max(45, Math.round(base.price * 0.4)) };
-        return { airport: a, flight };
-      });
+  const buildRoutes = (from: Airport, list: Airport[], factor: number) =>
+    list.slice(0, 5).map((a) => {
+      const all = generateFlights(from.code, a.code);
+      const options = all.filter((f) => f.stops === 0);
+      const seed = a.code.split("").reduce((n, c) => n + c.charCodeAt(0), 0);
+      const base = (options.length ? options : all)[seed % (options.length || all.length)]!;
+      const flight = { ...base, price: Math.max(45, Math.round(base.price * factor)) };
+      return { airport: a, flight };
+    });
+
+  // Both domestic hops and international routes are always offered.
+  const popularRoutes = useMemo(() => {
+    if (!origin) return { domestic: [], international: [] };
+    const same = AIRPORTS.filter((a) => a.country === origin.country && a.code !== origin.code);
+    const other = AIRPORTS.filter((a) => a.country !== origin.country);
+    return {
+      domestic: buildRoutes(origin, same, 0.4),
+      international: buildRoutes(origin, other, 1),
+    };
   }, [origin]);
 
   const filtered = useMemo(() => {
