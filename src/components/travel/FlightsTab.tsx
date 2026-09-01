@@ -543,7 +543,7 @@ export function FlightsTab() {
                   className="gradient-primary tap h-11 rounded-xl px-4 text-[13px] font-semibold text-primary-foreground"
                   onClick={() => setSelected(f)}
                 >
-                  Book
+                  Select
                 </button>
               </div>
             </div>
