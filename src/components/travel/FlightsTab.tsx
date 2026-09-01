@@ -128,6 +128,7 @@ export function FlightsTab() {
   const [styles, setStyles] = useState<TripStyle[]>([]);
   const [region, setRegion] = useState<Region>("Everywhere");
   const [sort, setSort] = useState<Sort>("price-asc");
+  const [selected, setSelected] = useState<Flight | null>(null);
 
   // Infants travel on lap at 10% of the adult fare.
   const passengers = adults + children + infants * 0.1;
