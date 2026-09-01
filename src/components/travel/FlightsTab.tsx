@@ -16,9 +16,11 @@ import {
   generateFlights,
   searchAirports,
   type Airport,
+  type Flight,
   type Region,
   type TripStyle,
 } from "@/lib/travel-data";
+import { PassengerDetails } from "./PassengerDetails";
 
 type StopFilter = "all" | "direct" | "one";
 type Sort = "price-asc" | "price-desc" | "duration" | "value";
