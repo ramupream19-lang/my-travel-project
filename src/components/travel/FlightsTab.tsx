@@ -191,6 +191,24 @@ export function FlightsTab() {
   const toggleStyle = (s: TripStyle) =>
     setStyles((prev) => (prev.includes(s) ? prev.filter((x) => x !== s) : [...prev, s]));
 
+  if (selected) {
+    return (
+      <PassengerDetails
+        flight={selected}
+        counts={{ adults, children, infants }}
+        total={Math.round(selected.price * passengers)}
+        international={intl}
+        onBack={() => setSelected(null)}
+        onConfirm={() => {
+          toast.success(`Passenger details saved — ${selected.airline} ${selected.flightNumber}`, {
+            description: "Booking confirmed. Track it under My Bookings.",
+          });
+          setSelected(null);
+        }}
+      />
+    );
+  }
+
   return (
     <div className="space-y-3">
       <GlassCard className="space-y-3">
