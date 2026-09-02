@@ -1,0 +1,178 @@
+{
+  "version": 1,
+  "sdk_version": "1.0.0",
+  "path": "/mcp",
+  "auth": {
+    "type": "oauth",
+    "issuer": "https://wokbckogzlpzzurbvpeb.supabase.co/auth/v1",
+    "accepted_audiences": [
+      "authenticated"
+    ]
+  },
+  "mcp": {
+    "server": {
+      "name": "glassy-getaways",
+      "version": "0.1.0",
+      "title": "Glassy Getaways"
+    },
+    "tools": [
+      {
+        "name": "search_flights",
+        "title": "Search flights",
+        "description": "Search TravelMate flight options between two cities, airports or IATA codes. Returns airline, times, stops and price.",
+        "annotations": {
+          "readOnlyHint": true,
+          "idempotentHint": true,
+          "openWorldHint": false
+        },
+        "inputSchema": {
+          "$schema": "http://json-schema.org/draft-07/schema#",
+          "type": "object",
+          "properties": {
+            "from": {
+              "type": "string",
+              "minLength": 2,
+              "description": "Origin city, country or IATA code, e.g. 'Mumbai' or 'BOM'."
+            },
+            "to": {
+              "type": "string",
+              "minLength": 2,
+              "description": "Destination city, country or IATA code, e.g. 'Dubai' or 'DXB'."
+            },
+            "maxPrice": {
+              "description": "Optional maximum fare per adult, in USD.",
+              "type": "number",
+              "exclusiveMinimum": 0
+            },
+            "directOnly": {
+              "description": "Only return non-stop flights.",
+              "type": "boolean"
+            }
+          },
+          "required": [
+            "from",
+            "to"
+          ]
+        },
+        "outputSchema": null
+      },
+      {
+        "name": "destination_guide",
+        "title": "Destination guide",
+        "description": "Get TravelMate's travel guide for a country or city: top attractions, hotels, itinerary, best time to visit, tips and indicative flight pricing.",
+        "annotations": {
+          "readOnlyHint": true,
+          "idempotentHint": true,
+          "openWorldHint": false
+        },
+        "inputSchema": {
+          "$schema": "http://json-schema.org/draft-07/schema#",
+          "type": "object",
+          "properties": {
+            "place": {
+              "type": "string",
+              "minLength": 2,
+              "description": "Country or city name, e.g. 'India' or 'Mumbai'."
+            }
+          },
+          "required": [
+            "place"
+          ]
+        },
+        "outputSchema": null
+      },
+      {
+        "name": "list_saved_trips",
+        "title": "List saved trips",
+        "description": "List the signed-in traveller's saved TravelMate trips.",
+        "annotations": {
+          "readOnlyHint": true,
+          "idempotentHint": true,
+          "openWorldHint": false
+        },
+        "inputSchema": {
+          "$schema": "http://json-schema.org/draft-07/schema#",
+          "type": "object",
+          "properties": {}
+        },
+        "outputSchema": null
+      },
+      {
+        "name": "save_trip",
+        "title": "Save a trip",
+        "description": "Save a trip idea to the signed-in traveller's TravelMate account.",
+        "annotations": {
+          "readOnlyHint": false,
+          "destructiveHint": false,
+          "openWorldHint": false
+        },
+        "inputSchema": {
+          "$schema": "http://json-schema.org/draft-07/schema#",
+          "type": "object",
+          "properties": {
+            "origin": {
+              "type": "string",
+              "minLength": 2,
+              "description": "Origin city or airport code."
+            },
+            "destination": {
+              "type": "string",
+              "minLength": 2,
+              "description": "Destination city or airport code."
+            },
+            "departDate": {
+              "description": "Departure date, YYYY-MM-DD.",
+              "type": "string"
+            },
+            "returnDate": {
+              "description": "Return date, YYYY-MM-DD.",
+              "type": "string"
+            },
+            "passengers": {
+              "description": "Total passengers (default 1).",
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 9
+            },
+            "notes": {
+              "description": "Free-form notes about the trip.",
+              "type": "string",
+              "maxLength": 2000
+            }
+          },
+          "required": [
+            "origin",
+            "destination"
+          ]
+        },
+        "outputSchema": null
+      },
+      {
+        "name": "delete_saved_trip",
+        "title": "Delete a saved trip",
+        "description": "Delete one of the signed-in traveller's saved TravelMate trips by id.",
+        "annotations": {
+          "readOnlyHint": false,
+          "destructiveHint": true,
+          "openWorldHint": false
+        },
+        "inputSchema": {
+          "$schema": "http://json-schema.org/draft-07/schema#",
+          "type": "object",
+          "properties": {
+            "id": {
+              "type": "string",
+              "format": "uuid",
+              "pattern": "^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$",
+              "description": "The saved trip id."
+            }
+          },
+          "required": [
+            "id"
+          ]
+        },
+        "outputSchema": null
+      }
+    ]
+  }
+}
