@@ -9,7 +9,7 @@ import { lovable } from "@/integrations/lovable/index";
 export const Route = createFileRoute("/auth")({
   ssr: false,
   validateSearch: (s: Record<string, unknown>) => ({
-    next: typeof s.next === "string" ? s.next : "",
+    next: typeof s['next'] === "string" ? (s['next'] as string) : "",
   }),
   head: () => ({
     meta: [
@@ -48,7 +48,7 @@ function AuthPage() {
     });
   }, [target]);
 
-  const submit = async () => {
+  const submit = async (): Promise<void> => {
     if (!email.trim() || !password) {
       toast.error("Enter your email and password");
       return;
@@ -61,21 +61,21 @@ function AuthPage() {
         options: { emailRedirectTo: window.location.origin + target },
       });
       setBusy(false);
-      if (error) return toast.error(error.message);
+      if (error) { toast.error(error.message); return; }
       toast.success("Check your email to confirm your account");
       return;
     }
     const { error } = await supabase.auth.signInWithPassword({ email, password });
     setBusy(false);
-    if (error) return toast.error(error.message);
+    if (error) { toast.error(error.message); return; }
     window.location.replace(target);
   };
 
-  const google = async () => {
+  const google = async (): Promise<void> => {
     const result = await lovable.auth.signInWithOAuth("google", {
       redirect_uri: window.location.origin + target,
     });
-    if (result.error) return toast.error("Google sign-in failed");
+    if (result.error) { toast.error("Google sign-in failed"); return; }
     if (result.redirected) return;
     window.location.replace(target);
   };
