@@ -14,6 +14,8 @@ import { Route as AuthRouteImport } from './routes/auth'
 import { Route as BookingsRouteImport } from './routes/bookings'
 import { Route as DestinationsRouteImport } from './routes/destinations'
 import { Route as FaqRouteImport } from './routes/faq'
+import { Route as McpRouteImport } from './routes/mcp'
+import { Route as Char91DotwellKnownChar93OauthProtectedResourceRouteImport } from './routes/[.well-known]/oauth-protected-resource'
 import { Route as DotlovableOauthConsentRouteImport } from './routes/[.]lovable.oauth.consent'
 
 const IndexRoute = IndexRouteImport.update({
@@ -41,6 +43,17 @@ const FaqRoute = FaqRouteImport.update({
   path: '/faq',
   getParentRoute: () => rootRouteImport,
 } as any)
+const McpRoute = McpRouteImport.update({
+  id: '/mcp',
+  path: '/mcp',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const Char91DotwellKnownChar93OauthProtectedResourceRoute =
+  Char91DotwellKnownChar93OauthProtectedResourceRouteImport.update({
+    id: '/.well-known/oauth-protected-resource',
+    path: '/.well-known/oauth-protected-resource',
+    getParentRoute: () => rootRouteImport,
+  } as any)
 const DotlovableOauthConsentRoute = DotlovableOauthConsentRouteImport.update({
   id: '/.lovable/oauth/consent',
   path: '/.lovable/oauth/consent',
@@ -53,6 +66,8 @@ export interface FileRoutesByFullPath {
   '/bookings': typeof BookingsRoute
   '/destinations': typeof DestinationsRoute
   '/faq': typeof FaqRoute
+  '/mcp': typeof McpRoute
+  '/.well-known/oauth-protected-resource': typeof Char91DotwellKnownChar93OauthProtectedResourceRoute
   '/.lovable/oauth/consent': typeof DotlovableOauthConsentRoute
 }
 export interface FileRoutesByTo {
@@ -61,6 +76,8 @@ export interface FileRoutesByTo {
   '/bookings': typeof BookingsRoute
   '/destinations': typeof DestinationsRoute
   '/faq': typeof FaqRoute
+  '/mcp': typeof McpRoute
+  '/.well-known/oauth-protected-resource': typeof Char91DotwellKnownChar93OauthProtectedResourceRoute
   '/.lovable/oauth/consent': typeof DotlovableOauthConsentRoute
 }
 export interface FileRoutesById {
@@ -70,6 +87,8 @@ export interface FileRoutesById {
   '/bookings': typeof BookingsRoute
   '/destinations': typeof DestinationsRoute
   '/faq': typeof FaqRoute
+  '/mcp': typeof McpRoute
+  '/.well-known/oauth-protected-resource': typeof Char91DotwellKnownChar93OauthProtectedResourceRoute
   '/.lovable/oauth/consent': typeof DotlovableOauthConsentRoute
 }
 export interface FileRouteTypes {
@@ -80,6 +99,8 @@ export interface FileRouteTypes {
     | '/bookings'
     | '/destinations'
     | '/faq'
+    | '/mcp'
+    | '/.well-known/oauth-protected-resource'
     | '/.lovable/oauth/consent'
   fileRoutesByTo: FileRoutesByTo
   to:
@@ -88,6 +109,8 @@ export interface FileRouteTypes {
     | '/bookings'
     | '/destinations'
     | '/faq'
+    | '/mcp'
+    | '/.well-known/oauth-protected-resource'
     | '/.lovable/oauth/consent'
   id:
     | '__root__'
@@ -96,6 +119,8 @@ export interface FileRouteTypes {
     | '/bookings'
     | '/destinations'
     | '/faq'
+    | '/mcp'
+    | '/.well-known/oauth-protected-resource'
     | '/.lovable/oauth/consent'
   fileRoutesById: FileRoutesById
 }
@@ -105,6 +130,8 @@ export interface RootRouteChildren {
   BookingsRoute: typeof BookingsRoute
   DestinationsRoute: typeof DestinationsRoute
   FaqRoute: typeof FaqRoute
+  McpRoute: typeof McpRoute
+  Char91DotwellKnownChar93OauthProtectedResourceRoute: typeof Char91DotwellKnownChar93OauthProtectedResourceRoute
   DotlovableOauthConsentRoute: typeof DotlovableOauthConsentRoute
 }
 
@@ -145,6 +172,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof FaqRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/mcp': {
+      id: '/mcp'
+      path: '/mcp'
+      fullPath: '/mcp'
+      preLoaderRoute: typeof McpRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/.well-known/oauth-protected-resource': {
+      id: '/.well-known/oauth-protected-resource'
+      path: '/.well-known/oauth-protected-resource'
+      fullPath: '/.well-known/oauth-protected-resource'
+      preLoaderRoute: typeof Char91DotwellKnownChar93OauthProtectedResourceRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/.lovable/oauth/consent': {
       id: '/.lovable/oauth/consent'
       path: '/.lovable/oauth/consent'
@@ -161,6 +202,9 @@ const rootRouteChildren: RootRouteChildren = {
   BookingsRoute: BookingsRoute,
   DestinationsRoute: DestinationsRoute,
   FaqRoute: FaqRoute,
+  McpRoute: McpRoute,
+  Char91DotwellKnownChar93OauthProtectedResourceRoute:
+    Char91DotwellKnownChar93OauthProtectedResourceRoute,
   DotlovableOauthConsentRoute: DotlovableOauthConsentRoute,
 }
 export const routeTree = rootRouteImport
