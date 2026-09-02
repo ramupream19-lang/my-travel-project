@@ -20,7 +20,7 @@ export default defineMcp({
     acceptedAudiences: "authenticated",
   }),
   // Cast: tools without an outputSchema trip exactOptionalPropertyTypes.
-  tools: [searchFlights, destinationGuide, listSavedTrips, saveTrip, deleteSavedTrip] as Parameters<
+  tools: [searchFlights, destinationGuide, listSavedTrips, saveTrip, deleteSavedTrip] as unknown as Parameters<
     typeof defineMcp
   >[0]["tools"],
 
