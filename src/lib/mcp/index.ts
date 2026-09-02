@@ -19,5 +19,9 @@ export default defineMcp({
     issuer: `https://${projectRef}.supabase.co/auth/v1`,
     acceptedAudiences: "authenticated",
   }),
-  tools: [searchFlights, destinationGuide, listSavedTrips, saveTrip, deleteSavedTrip],
+  // Cast: tools without an outputSchema trip exactOptionalPropertyTypes.
+  tools: [searchFlights, destinationGuide, listSavedTrips, saveTrip, deleteSavedTrip] as Parameters<
+    typeof defineMcp
+  >[0]["tools"],
+
 });
