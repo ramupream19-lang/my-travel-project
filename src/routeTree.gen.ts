@@ -10,6 +10,7 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as AuthRouteImport } from './routes/auth'
 import { Route as BookingsRouteImport } from './routes/bookings'
 import { Route as DestinationsRouteImport } from './routes/destinations'
 import { Route as FaqRouteImport } from './routes/faq'
@@ -17,6 +18,11 @@ import { Route as FaqRouteImport } from './routes/faq'
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AuthRoute = AuthRouteImport.update({
+  id: '/auth',
+  path: '/auth',
   getParentRoute: () => rootRouteImport,
 } as any)
 const BookingsRoute = BookingsRouteImport.update({
@@ -37,12 +43,14 @@ const FaqRoute = FaqRouteImport.update({
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/auth': typeof AuthRoute
   '/bookings': typeof BookingsRoute
   '/destinations': typeof DestinationsRoute
   '/faq': typeof FaqRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/auth': typeof AuthRoute
   '/bookings': typeof BookingsRoute
   '/destinations': typeof DestinationsRoute
   '/faq': typeof FaqRoute
@@ -50,20 +58,22 @@ export interface FileRoutesByTo {
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/auth': typeof AuthRoute
   '/bookings': typeof BookingsRoute
   '/destinations': typeof DestinationsRoute
   '/faq': typeof FaqRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/bookings' | '/destinations' | '/faq'
+  fullPaths: '/' | '/auth' | '/bookings' | '/destinations' | '/faq'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/bookings' | '/destinations' | '/faq'
-  id: '__root__' | '/' | '/bookings' | '/destinations' | '/faq'
+  to: '/' | '/auth' | '/bookings' | '/destinations' | '/faq'
+  id: '__root__' | '/' | '/auth' | '/bookings' | '/destinations' | '/faq'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  AuthRoute: typeof AuthRoute
   BookingsRoute: typeof BookingsRoute
   DestinationsRoute: typeof DestinationsRoute
   FaqRoute: typeof FaqRoute
@@ -76,6 +86,13 @@ declare module '@tanstack/react-router' {
       path: '/'
       fullPath: '/'
       preLoaderRoute: typeof IndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/auth': {
+      id: '/auth'
+      path: '/auth'
+      fullPath: '/auth'
+      preLoaderRoute: typeof AuthRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/bookings': {
@@ -104,6 +121,7 @@ declare module '@tanstack/react-router' {
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  AuthRoute: AuthRoute,
   BookingsRoute: BookingsRoute,
   DestinationsRoute: DestinationsRoute,
   FaqRoute: FaqRoute,
