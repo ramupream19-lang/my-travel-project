@@ -7,6 +7,7 @@ import { CarsTab } from "@/components/travel/CarsTab";
 import { AiTab } from "@/components/travel/AiTab";
 
 export const Route = createFileRoute("/")({
+  staticData: { sitemap: true },
   head: () => ({
     meta: [
       { title: "TravelMate — Book flights, stays & cars" },

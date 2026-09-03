@@ -21,6 +21,7 @@ type OAuthApi = {
 const oauthApi = () => (supabase.auth as unknown as { oauth: OAuthApi }).oauth;
 
 export const Route = createFileRoute("/.lovable/oauth/consent")({
+  staticData: { sitemap: false },
   // Browser-only: the session lives in localStorage, which SSR cannot read.
   ssr: false,
   validateSearch: (s: Record<string, unknown>) => ({

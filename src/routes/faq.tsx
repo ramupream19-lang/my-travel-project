@@ -17,6 +17,7 @@ const faqJsonLd = {
 };
 
 export const Route = createFileRoute("/faq")({
+  staticData: { sitemap: true },
   head: () => ({
     meta: [
       { title: "TravelMate — Help & FAQ" },

@@ -6,6 +6,7 @@ import { PhoneShell, GlassCard, SectionTitle } from "@/components/travel/PhoneSh
 import { BOOKINGS, type BookingRecord } from "@/lib/travel-data";
 
 export const Route = createFileRoute("/bookings")({
+  staticData: { sitemap: true },
   head: () => ({
     meta: [
       { title: "TravelMate — My Bookings" },

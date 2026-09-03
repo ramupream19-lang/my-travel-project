@@ -6,6 +6,7 @@ import { PhoneShell, GlassCard, SectionTitle } from "@/components/travel/PhoneSh
 import { DESTINATIONS, REGIONS, TRIP_STYLES, type Region, type TripStyle } from "@/lib/travel-data";
 
 export const Route = createFileRoute("/destinations")({
+  staticData: { sitemap: true },
   head: () => ({
     meta: [
       { title: "TravelMate — Popular Destinations" },
