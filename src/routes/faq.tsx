@@ -3,6 +3,19 @@ import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/
 import { PhoneShell, GlassCard } from "@/components/travel/PhoneShell";
 import { FAQS } from "@/lib/travel-data";
 
+const faqJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  mainEntity: FAQS.map((f) => ({
+    "@type": "Question",
+    name: f.q,
+    acceptedAnswer: {
+      "@type": "Answer",
+      text: f.a,
+    },
+  })),
+};
+
 export const Route = createFileRoute("/faq")({
   head: () => ({
     meta: [
@@ -12,6 +25,12 @@ export const Route = createFileRoute("/faq")({
       { property: "og:description", content: "Find answers about visas, bookings, travel insurance and more." },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
+    ],
+    scripts: [
+      {
+        type: "application/ld+json",
+        children: JSON.stringify(faqJsonLd),
+      },
     ],
   }),
   component: FaqPage,
