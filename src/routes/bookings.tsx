@@ -14,8 +14,11 @@ export const Route = createFileRoute("/bookings")({
       { property: "og:title", content: "TravelMate — My Bookings" },
       { property: "og:description", content: "Track your flights, hotels and car rentals with the booking reference tracer." },
       { property: "og:type", content: "website" },
+      { property: "og:url", content: "https://frosted-journeys.lovable.app/bookings" },
       { name: "twitter:card", content: "summary_large_image" },
     ],
+    links: [{ rel: "canonical", href: "https://frosted-journeys.lovable.app/bookings" }],
+
   }),
   component: BookingsPage,
 });
