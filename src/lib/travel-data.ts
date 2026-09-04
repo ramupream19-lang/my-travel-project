@@ -166,7 +166,62 @@ export const AIRPORTS: Airport[] = [
   { code: "ZQN", city: "Queenstown", country: "New Zealand", region: "Oceania", domestic: false, embassy: "https://www.immigration.govt.nz" },
   { code: "NAN", city: "Nadi", country: "Fiji", region: "Oceania", domestic: false, embassy: "https://www.immigration.gov.fj" },
   { code: "PPT", city: "Papeete", country: "French Polynesia", region: "Oceania", domestic: false, embassy: "https://www.polynesie-francaise.pref.gouv.fr" },
+  // --- Additional coverage ---
+  // South Africa
+  { code: "DUR", city: "Durban", country: "South Africa", region: "Africa", domestic: false, name: "King Shaka International Airport", embassy: "https://www.dha.gov.za" },
+  { code: "PLZ", city: "Gqeberha", country: "South Africa", region: "Africa", domestic: false, name: "Chief Dawid Stuurman International Airport", embassy: "https://www.dha.gov.za" },
+  { code: "BFN", city: "Bloemfontein", country: "South Africa", region: "Africa", domestic: false, name: "Bram Fischer International Airport", embassy: "https://www.dha.gov.za" },
+  { code: "GRJ", city: "George", country: "South Africa", region: "Africa", domestic: false, name: "George Airport", embassy: "https://www.dha.gov.za" },
+  { code: "ELS", city: "East London", country: "South Africa", region: "Africa", domestic: false, name: "East London Airport", embassy: "https://www.dha.gov.za" },
+  { code: "HLA", city: "Lanseria", country: "South Africa", region: "Africa", domestic: false, name: "Lanseria International Airport", embassy: "https://www.dha.gov.za" },
+  // Africa extras
+  { code: "WDH", city: "Windhoek", country: "Namibia", region: "Africa", domestic: false, name: "Hosea Kutako International Airport", embassy: "https://mhaiss.gov.na" },
+  { code: "GBE", city: "Gaborone", country: "Botswana", region: "Africa", domestic: false, name: "Sir Seretse Khama International Airport", embassy: "https://www.gov.bw" },
+  { code: "HRE", city: "Harare", country: "Zimbabwe", region: "Africa", domestic: false, name: "Robert Gabriel Mugabe International Airport", embassy: "https://www.evisa.gov.zw" },
+  { code: "LVI", city: "Livingstone", country: "Zambia", region: "Africa", domestic: false, name: "Harry Mwaanga Nkumbula International Airport", embassy: "https://www.zambiaimmigration.gov.zm" },
+  { code: "ZNZ", city: "Zanzibar", country: "Tanzania", region: "Africa", domestic: false, name: "Abeid Amani Karume International Airport", embassy: "https://visa.immigration.go.tz" },
+  { code: "TUN", city: "Tunis", country: "Tunisia", region: "Africa", domestic: false, name: "Tunis–Carthage International Airport", embassy: "https://www.diplomatie.gov.tn" },
+  { code: "ALG", city: "Algiers", country: "Algeria", region: "Africa", domestic: false, name: "Houari Boumediene Airport", embassy: "https://www.mfa.gov.dz" },
+  { code: "SEZ", city: "Mahé", country: "Seychelles", region: "Africa", domestic: false, name: "Seychelles International Airport", embassy: "https://ics.egov.sc" },
+  // India extras
+  { code: "IXC", city: "Chandigarh", country: "India", region: "Asia", domestic: false, name: "Shaheed Bhagat Singh International Airport", embassy: "https://indianvisaonline.gov.in" },
+  { code: "ATQ", city: "Amritsar", country: "India", region: "Asia", domestic: false, name: "Sri Guru Ram Dass Jee International Airport", embassy: "https://indianvisaonline.gov.in" },
+  { code: "VNS", city: "Varanasi", country: "India", region: "Asia", domestic: false, name: "Lal Bahadur Shastri International Airport", embassy: "https://indianvisaonline.gov.in" },
+  { code: "IXZ", city: "Port Blair", country: "India", region: "Asia", domestic: false, name: "Veer Savarkar International Airport", embassy: "https://indianvisaonline.gov.in" },
+  { code: "SXR", city: "Srinagar", country: "India", region: "Asia", domestic: false, name: "Sheikh ul-Alam International Airport", embassy: "https://indianvisaonline.gov.in" },
+  { code: "GAU", city: "Guwahati", country: "India", region: "Asia", domestic: false, name: "Lokpriya Gopinath Bordoloi International Airport", embassy: "https://indianvisaonline.gov.in" },
+  { code: "BBI", city: "Bhubaneswar", country: "India", region: "Asia", domestic: false, name: "Biju Patnaik International Airport", embassy: "https://indianvisaonline.gov.in" },
+  { code: "NAG", city: "Nagpur", country: "India", region: "Asia", domestic: false, name: "Dr. Babasaheb Ambedkar International Airport", embassy: "https://indianvisaonline.gov.in" },
+  { code: "IDR", city: "Indore", country: "India", region: "Asia", domestic: false, name: "Devi Ahilyabai Holkar Airport", embassy: "https://indianvisaonline.gov.in" },
+  { code: "CJB", city: "Coimbatore", country: "India", region: "Asia", domestic: false, name: "Coimbatore International Airport", embassy: "https://indianvisaonline.gov.in" },
+  { code: "IXM", city: "Madurai", country: "India", region: "Asia", domestic: false, name: "Madurai International Airport", embassy: "https://indianvisaonline.gov.in" },
+  { code: "VTZ", city: "Visakhapatnam", country: "India", region: "Asia", domestic: false, name: "Visakhapatnam International Airport", embassy: "https://indianvisaonline.gov.in" },
+  { code: "PAT", city: "Patna", country: "India", region: "Asia", domestic: false, name: "Jay Prakash Narayan Airport", embassy: "https://indianvisaonline.gov.in" },
+  { code: "RPR", city: "Raipur", country: "India", region: "Asia", domestic: false, name: "Swami Vivekananda Airport", embassy: "https://indianvisaonline.gov.in" },
+  { code: "UDR", city: "Udaipur", country: "India", region: "Asia", domestic: false, name: "Maharana Pratap Airport", embassy: "https://indianvisaonline.gov.in" },
+  { code: "JDH", city: "Jodhpur", country: "India", region: "Asia", domestic: false, name: "Jodhpur Airport", embassy: "https://indianvisaonline.gov.in" },
+  { code: "DED", city: "Dehradun", country: "India", region: "Asia", domestic: false, name: "Jolly Grant Airport", embassy: "https://indianvisaonline.gov.in" },
+  // Europe / Americas / Asia extras
+  { code: "MAN", city: "Manchester", country: "United Kingdom", region: "Europe", domestic: false, name: "Manchester Airport", embassy: "https://www.gov.uk/browse/visas-immigration" },
+  { code: "BRU", city: "Brussels", country: "Belgium", region: "Europe", domestic: false, name: "Brussels Airport", embassy: "https://dofi.ibz.be" },
+  { code: "WAW", city: "Warsaw", country: "Poland", region: "Europe", domestic: false, name: "Warsaw Chopin Airport", embassy: "https://www.gov.pl" },
+  { code: "OTP", city: "Bucharest", country: "Romania", region: "Europe", domestic: false, name: "Henri Coandă International Airport", embassy: "https://evisa.mae.ro" },
+  { code: "IAD", city: "Washington", country: "United States", region: "North America", domestic: true, name: "Washington Dulles International Airport", embassy: "https://travel.state.gov" },
+  { code: "ATL", city: "Atlanta", country: "United States", region: "North America", domestic: true, name: "Hartsfield–Jackson Atlanta International Airport", embassy: "https://travel.state.gov" },
+  { code: "DFW", city: "Dallas", country: "United States", region: "North America", domestic: true, name: "Dallas/Fort Worth International Airport", embassy: "https://travel.state.gov" },
+  { code: "YUL", city: "Montréal", country: "Canada", region: "North America", domestic: false, name: "Montréal–Trudeau International Airport", embassy: "https://www.canada.ca/en/immigration-refugees-citizenship.html" },
+  { code: "CGK", city: "Jakarta", country: "Indonesia", region: "Asia", domestic: false, name: "Soekarno–Hatta International Airport", embassy: "https://evisa.imigrasi.go.id" },
+  { code: "HKT", city: "Phuket", country: "Thailand", region: "Asia", domestic: false, name: "Phuket International Airport", embassy: "https://www.thaievisa.go.th" },
+  { code: "MCT", city: "Muscat", country: "Oman", region: "Asia", domestic: false, name: "Muscat International Airport", embassy: "https://evisa.rop.gov.om" },
+  { code: "KWI", city: "Kuwait City", country: "Kuwait", region: "Asia", domestic: false, name: "Kuwait International Airport", embassy: "https://www.moi.gov.kw" },
+  { code: "BAH", city: "Manama", country: "Bahrain", region: "Asia", domestic: false, name: "Bahrain International Airport", embassy: "https://www.evisa.gov.bh" },
 ];
+
+/** Every country we know an airport in, for nationality pickers. */
+export const COUNTRIES: string[] = [...new Set(AIRPORTS.map((a) => a.country))].sort((a, b) =>
+  a.localeCompare(b),
+);
+
 
 /** Build an Airport entry for a city the user typed that isn't in our list. */
 export function customAirport(input: string): Airport {
