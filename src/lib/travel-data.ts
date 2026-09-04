@@ -35,7 +35,15 @@ export type Airport = {
   region: Exclude<Region, "Everywhere">;
   domestic: boolean;
   embassy: string;
+  /** Full airport name, e.g. "O. R. Tambo International Airport". */
+  name?: string;
 };
+
+/** Full airport name for display; falls back to a sensible generic name. */
+export function airportName(a: Airport): string {
+  return a.name ?? `${a.city} International Airport`;
+}
+
 
 export const AIRPORTS: Airport[] = [
   { code: "JFK", city: "New York", country: "United States", region: "North America", domestic: true, embassy: "https://travel.state.gov" },
