@@ -79,14 +79,23 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
-      { title: "Lovable App" },
-      { name: "description", content: "Lovable Generated Project" },
-      { name: "author", content: "Lovable" },
-      { property: "og:title", content: "Lovable App" },
-      { property: "og:description", content: "Lovable Generated Project" },
+      { title: "TravelMate — Book Flights, Stays & Cars" },
+      {
+        name: "description",
+        content:
+          "TravelMate helps you search flights worldwide, compare stays and car rentals, check visa requirements and trace bookings.",
+      },
+      { name: "author", content: "TravelMate" },
+      { property: "og:site_name", content: "TravelMate" },
+      { property: "og:title", content: "TravelMate — Travel Booking App" },
+      {
+        property: "og:description",
+        content:
+          "A glassmorphism travel booking experience: flight search, stays, car rentals, AI trip guides and booking tracking.",
+      },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
-      { name: "twitter:site", content: "@Lovable" },
+
     ],
     links: [
       {
