@@ -402,6 +402,7 @@ export function FlightsTab() {
             <div className="rounded-xl bg-muted/70 p-3">
               <p className="text-[13px] text-muted-foreground">Budget range: $100 – $10,000+</p>
               <Slider
+                aria-label="Trip budget"
                 className="my-3"
                 min={100}
                 max={10000}

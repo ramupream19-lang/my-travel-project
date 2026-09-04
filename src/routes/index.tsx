@@ -23,7 +23,7 @@ export const Route = createFileRoute("/")({
 
 function IndexPage() {
   return (
-    <PhoneShell title="TravelMate" subtitle="Where to next?">
+    <PhoneShell title="TravelMate — Book flights, stays & cars" subtitle="Where to next?">
       <Tabs defaultValue="flights" className="w-full">
         <TabsList className="glass mb-3 grid h-12 w-full grid-cols-4 p-1">
           {[

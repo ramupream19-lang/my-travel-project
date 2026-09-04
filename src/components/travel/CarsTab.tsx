@@ -115,7 +115,7 @@ export function CarsTab() {
         <Chips label="Car type" options={TYPES} value={type} onChange={setType} />
         <div>
           <p className="text-[13px] text-muted-foreground">Daily rate: up to ${maxRate}</p>
-          <Slider min={20} max={200} step={5} value={[maxRate]} onValueChange={(v) => setMaxRate(v[0] ?? 200)} className="my-2" />
+          <Slider aria-label="Maximum daily rental rate" min={20} max={200} step={5} value={[maxRate]} onValueChange={(v) => setMaxRate(v[0] ?? 200)} className="my-2" />
         </div>
         <Chips label="Insurance" options={INSURANCE} value={insurance} onChange={setInsurance} />
         <Chips label="Mileage limit" options={MILEAGE} value={mileage} onChange={setMileage} />

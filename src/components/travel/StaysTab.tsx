@@ -88,7 +88,7 @@ export function StaysTab() {
 
         <div>
           <p className="text-[13px] text-muted-foreground">Price per night: up to ${maxPrice}</p>
-          <Slider min={20} max={500} step={5} value={[maxPrice]} onValueChange={(v) => setMaxPrice(v[0] ?? 500)} className="my-2" />
+          <Slider aria-label="Maximum price per night" min={20} max={500} step={5} value={[maxPrice]} onValueChange={(v) => setMaxPrice(v[0] ?? 500)} className="my-2" />
         </div>
 
         <div>
@@ -146,7 +146,7 @@ export function StaysTab() {
 
         <div>
           <p className="text-[13px] text-muted-foreground">Guest rating: {minRating.toFixed(1)}+</p>
-          <Slider min={0} max={10} step={0.5} value={[minRating]} onValueChange={(v) => setMinRating(v[0] ?? 0)} className="my-2" />
+          <Slider aria-label="Minimum guest rating" min={0} max={10} step={0.5} value={[minRating]} onValueChange={(v) => setMinRating(v[0] ?? 0)} className="my-2" />
         </div>
       </GlassCard>
 
