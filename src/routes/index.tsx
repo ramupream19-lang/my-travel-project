@@ -15,8 +15,11 @@ export const Route = createFileRoute("/")({
       { property: "og:title", content: "TravelMate — Book flights, stays & cars" },
       { property: "og:description", content: "Search and book flights, hotels and car rentals with an iPhone glassmorphism experience." },
       { property: "og:type", content: "website" },
+      { property: "og:url", content: "https://frosted-journeys.lovable.app/" },
       { name: "twitter:card", content: "summary_large_image" },
     ],
+    links: [{ rel: "canonical", href: "https://frosted-journeys.lovable.app/" }],
+
   }),
   component: IndexPage,
 });
