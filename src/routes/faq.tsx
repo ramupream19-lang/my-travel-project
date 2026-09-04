@@ -25,8 +25,11 @@ export const Route = createFileRoute("/faq")({
       { property: "og:title", content: "TravelMate — Help & FAQ" },
       { property: "og:description", content: "Find answers about visas, bookings, travel insurance and more." },
       { property: "og:type", content: "website" },
+      { property: "og:url", content: "https://frosted-journeys.lovable.app/faq" },
       { name: "twitter:card", content: "summary_large_image" },
     ],
+    links: [{ rel: "canonical", href: "https://frosted-journeys.lovable.app/faq" }],
+
     scripts: [
       {
         type: "application/ld+json",
