@@ -14,8 +14,11 @@ export const Route = createFileRoute("/destinations")({
       { property: "og:title", content: "TravelMate — Popular Destinations" },
       { property: "og:description", content: "Explore top-rated destinations, compare prices and find your perfect trip style." },
       { property: "og:type", content: "website" },
+      { property: "og:url", content: "https://frosted-journeys.lovable.app/destinations" },
       { name: "twitter:card", content: "summary_large_image" },
     ],
+    links: [{ rel: "canonical", href: "https://frosted-journeys.lovable.app/destinations" }],
+
   }),
   component: DestinationsPage,
 });
