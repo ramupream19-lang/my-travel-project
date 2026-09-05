@@ -485,8 +485,18 @@ export function FlightsTab() {
 
       {/* RESULTS */}
       <GlassCard className="flex items-center justify-between py-3">
-        <p className="text-[13px] font-semibold">{filtered.length} flights found</p>
+        <p className="text-[13px] font-semibold">
+          {searched
+            ? `${filtered.length} flight${filtered.length === 1 ? "" : "s"} found`
+            : "Ready to search"}
+          {searched && origin && destination ? (
+            <span className="block text-[11px] font-normal text-subtle">
+              {origin.code} → {destination.code} · {paxLabel}
+            </span>
+          ) : null}
+        </p>
         <select
+          aria-label="Sort flights"
           value={sort}
           onChange={(e) => setSort(e.target.value as Sort)}
           className="rounded-lg border border-input bg-card/80 px-2 py-1 text-[12px]"
@@ -502,7 +512,27 @@ export function FlightsTab() {
         <GlassCard className="text-center text-[13px] text-muted-foreground">
           Pick a destination and search to see live results. Filters update instantly.
         </GlassCard>
+      ) : filtered.length === 0 ? (
+        <GlassCard className="space-y-3 text-center text-[13px] text-muted-foreground">
+          <p>
+            No flights match your filters for {origin?.code} → {destination?.code}. Try a bigger
+            budget or clear the filters.
+          </p>
+          <Button
+            variant="secondary"
+            className="tap h-11 w-full rounded-xl text-[13px] font-semibold"
+            onClick={() => {
+              setStopFilter("all");
+              setBudget(10000);
+              setStyles([]);
+              setRegion("Everywhere");
+            }}
+          >
+            Show all flights
+          </Button>
+        </GlassCard>
       ) : (
+
         filtered.map((f) => (
           <GlassCard key={f.id} hover className="space-y-3">
             <div className="flex items-center justify-between">
