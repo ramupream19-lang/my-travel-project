@@ -218,25 +218,28 @@ export function FlightsTab() {
 
   return (
     <div className="space-y-3">
-      <GlassCard className="space-y-3">
+      <GlassCard className="space-y-2.5">
         <AirportField
           label="Source"
           value={origin}
-          placeholder="Type a city, e.g. Chennai"
+          placeholder="Type your source city"
           onPick={(a: Airport) => {
             setOrigin(a);
+            setSearched(false);
           }}
         />
         <AirportField
           label="Destination"
           value={destination}
-          placeholder="Type any city or country worldwide"
+          placeholder="Type your destination city"
           onPick={(a: Airport) => {
             setDestination(a);
+            setSearched(false);
             setVisaCleared(false);
             if (!a.domestic || intl) setVisaOpen(true);
           }}
         />
+
 
         <div>
           <label className="mb-1 block text-[13px] text-muted-foreground">Travel date</label>
