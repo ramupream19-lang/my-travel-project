@@ -69,8 +69,14 @@ function AirportField({
       />
 
       {value && !open ? (
-        <p className="mt-1 flex items-center gap-1 text-[12px] text-primary">
-          <Check className="h-3 w-3" /> {value.city} ({value.code}) · {value.country}
+        <p className="mt-1 flex items-start gap-1 text-[12px] text-primary">
+          <Check className="mt-0.5 h-3 w-3 shrink-0" />
+          <span>
+            <span className="font-bold">{airportName(value)}</span>
+            <span className="block text-[11px] text-subtle">
+              {value.city} ({value.code}) · {value.country}
+            </span>
+          </span>
         </p>
       ) : null}
 
@@ -86,17 +92,16 @@ function AirportField({
               onClick={() => choose(a)}
               className="tap flex w-full items-center gap-2 px-3 py-2 text-left text-[13px] hover:bg-muted"
             >
-              <Plane className="h-3.5 w-3.5 text-primary" />
+              <Plane className="h-3.5 w-3.5 shrink-0 text-primary" />
               <span>
-                <span className="font-semibold">
-                  {a.city} ({a.code})
-                </span>
+                <span className="font-bold">{airportName(a)}</span>
                 <span className="block text-[12px] text-subtle">
-                  {a.country} · {a.region}
+                  {a.city} ({a.code}) · {a.country}
                 </span>
               </span>
             </button>
           ))}
+
           <button
             type="button"
             onClick={() => choose(customAirport(typed))}
