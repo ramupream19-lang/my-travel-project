@@ -11,6 +11,8 @@ import { getTravelGuide } from "@/lib/travel-guides";
 import {
   AIRPORTS,
   REGIONS,
+  airportName,
+
   TRIP_STYLES,
   customAirport,
   generateFlights,
