@@ -1,6 +1,6 @@
 import { Link } from "@tanstack/react-router";
-import { Plane, Compass, Ticket, HelpCircle } from "lucide-react";
-import type { ReactNode } from "react";
+import { Plane, Compass, Ticket, HelpCircle, BatteryFull, Signal, Wifi } from "lucide-react";
+import { useEffect, useState, type ReactNode } from "react";
 
 const NAV = [
   { to: "/", label: "Search", icon: Plane },
@@ -8,6 +8,32 @@ const NAV = [
   { to: "/bookings", label: "Bookings", icon: Ticket },
   { to: "/faq", label: "Help", icon: HelpCircle },
 ] as const;
+
+function StatusBar() {
+  const [time, setTime] = useState<string>("");
+
+  useEffect(() => {
+    const tick = () =>
+      setTime(
+        new Date().toLocaleTimeString([], { hour: "2-digit", minute: "2-digit", hour12: false }),
+      );
+    tick();
+    const id = setInterval(tick, 15_000);
+    return () => clearInterval(id);
+  }, []);
+
+  return (
+    <div className="relative z-20 flex h-11 items-center justify-between px-6 pt-1 text-[12px] font-semibold text-primary-foreground">
+      <span suppressHydrationWarning>{time || "--:--"}</span>
+      <span className="absolute left-1/2 top-0 hidden h-6 w-32 -translate-x-1/2 rounded-b-2xl bg-foreground/80 sm:block" />
+      <span className="flex items-center gap-1.5">
+        <Signal className="h-3.5 w-3.5" aria-label="Mobile data" />
+        <Wifi className="h-3.5 w-3.5" aria-label="Wi-Fi" />
+        <BatteryFull className="h-4 w-4" aria-label="Battery" />
+      </span>
+    </div>
+  );
+}
 
 export function PhoneShell({
   title,
@@ -24,11 +50,8 @@ export function PhoneShell({
         <div className="canvas-gradient absolute inset-0" />
 
         {/* notch / status bar */}
-        <div className="relative z-20 flex h-11 items-center justify-between px-6 pt-1 text-[12px] font-semibold text-primary-foreground">
-          <span>9:41</span>
-          <span className="absolute left-1/2 top-0 hidden h-6 w-32 -translate-x-1/2 rounded-b-2xl bg-foreground/80 sm:block" />
-          <span className="tracking-tight">✦ ▮▮▮ 􀛨</span>
-        </div>
+        <StatusBar />
+
 
         <header className="relative z-10 px-3 pb-2 pt-1">
           <h1 className="text-[28px] font-bold leading-tight text-primary-foreground">{title}</h1>
