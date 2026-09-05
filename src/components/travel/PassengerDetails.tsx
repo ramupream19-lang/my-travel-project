@@ -73,8 +73,10 @@ export function PassengerDetails({
         !p.lastName.trim() ||
         !p.dob ||
         !p.gender ||
+        !p.nationality ||
         (international && !p.passport.trim()),
     );
+
     if (missing) {
       toast.error("Fill in every passenger's details");
       return;
