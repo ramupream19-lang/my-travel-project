@@ -242,7 +242,9 @@ export function searchAirports(query: string, limit = 8): Airport[] {
   if (!q) return AIRPORTS.slice(0, limit);
   return AIRPORTS.filter(
     (a) =>
+      (a.name ?? "").toLowerCase().includes(q) ||
       a.city.toLowerCase().includes(q) ||
+
       a.country.toLowerCase().includes(q) ||
       a.code.toLowerCase().includes(q) ||
       a.region.toLowerCase().includes(q),
