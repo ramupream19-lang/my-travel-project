@@ -3,13 +3,14 @@ import { ArrowLeft, UserRound } from "lucide-react";
 import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 import { GlassCard } from "./PhoneShell";
-import type { Flight } from "@/lib/travel-data";
+import { COUNTRIES, type Flight } from "@/lib/travel-data";
 
 export type PaxCounts = { adults: number; children: number; infants: number };
 
 type PaxForm = {
   type: "Adult" | "Child" | "Infant";
   firstName: string;
+  middleName: string;
   lastName: string;
   dob: string;
   gender: string;
@@ -21,6 +22,7 @@ function blankPax(type: PaxForm["type"]): PaxForm {
   return {
     type,
     firstName: "",
+    middleName: "",
     lastName: "",
     dob: "",
     gender: "",
@@ -31,6 +33,8 @@ function blankPax(type: PaxForm["type"]): PaxForm {
 
 const field =
   "h-11 w-full rounded-xl border border-input bg-card/80 px-3 text-[15px] outline-none focus:border-primary focus:ring-3 focus:ring-primary/10";
+const labelCls = "mb-1 block text-[12px] text-muted-foreground";
+
 
 export function PassengerDetails({
   flight,
@@ -69,8 +73,10 @@ export function PassengerDetails({
         !p.lastName.trim() ||
         !p.dob ||
         !p.gender ||
+        !p.nationality ||
         (international && !p.passport.trim()),
     );
+
     if (missing) {
       toast.error("Fill in every passenger's details");
       return;
@@ -100,27 +106,47 @@ export function PassengerDetails({
       </GlassCard>
 
       {pax.map((p, i) => (
-        <GlassCard key={i} className="space-y-3">
+        <GlassCard key={i} className="space-y-2.5">
           <p className="flex items-center gap-2 text-[15px] font-semibold">
             <UserRound className="h-4 w-4 text-primary" /> {p.type} {i + 1}
+            {p.firstName || p.lastName ? (
+              <span className="ml-auto truncate text-[12px] font-medium text-muted-foreground">
+                {[p.firstName, p.middleName, p.lastName].filter(Boolean).join(" ")}
+              </span>
+            ) : null}
           </p>
-          <div className="grid grid-cols-2 gap-2">
-            <input
-              className={field}
-              placeholder="First name"
-              value={p.firstName}
-              onChange={(e) => update(i, "firstName", e.target.value)}
-            />
-            <input
-              className={field}
-              placeholder="Last name"
-              value={p.lastName}
-              onChange={(e) => update(i, "lastName", e.target.value)}
-            />
+          <div className="grid grid-cols-3 gap-2">
+            <div>
+              <label className={labelCls}>First name</label>
+              <input
+                className={field}
+                placeholder="First"
+                value={p.firstName}
+                onChange={(e) => update(i, "firstName", e.target.value)}
+              />
+            </div>
+            <div>
+              <label className={labelCls}>Middle name</label>
+              <input
+                className={field}
+                placeholder="Optional"
+                value={p.middleName}
+                onChange={(e) => update(i, "middleName", e.target.value)}
+              />
+            </div>
+            <div>
+              <label className={labelCls}>Last name</label>
+              <input
+                className={field}
+                placeholder="Last"
+                value={p.lastName}
+                onChange={(e) => update(i, "lastName", e.target.value)}
+              />
+            </div>
           </div>
           <div className="grid grid-cols-2 gap-2">
             <div>
-              <label className="mb-1 block text-[12px] text-muted-foreground">Date of birth</label>
+              <label className={labelCls}>Date of birth</label>
               <input
                 type="date"
                 className={field}
@@ -129,7 +155,7 @@ export function PassengerDetails({
               />
             </div>
             <div>
-              <label className="mb-1 block text-[12px] text-muted-foreground">Gender</label>
+              <label className={labelCls}>Gender</label>
               <select
                 className={field}
                 value={p.gender}
@@ -143,21 +169,39 @@ export function PassengerDetails({
             </div>
           </div>
           <div className="grid grid-cols-2 gap-2">
-            <input
-              className={field}
-              placeholder="Nationality"
-              value={p.nationality}
-              onChange={(e) => update(i, "nationality", e.target.value)}
-            />
-            <input
-              className={field}
-              placeholder={international ? "Passport number" : "ID number (optional)"}
-              value={p.passport}
-              onChange={(e) => update(i, "passport", e.target.value)}
-            />
+            <div>
+              <label className={labelCls}>Nationality</label>
+              <select
+                className={field}
+                value={p.nationality}
+                onChange={(e) => update(i, "nationality", e.target.value)}
+              >
+                <option value="">Select country</option>
+                {COUNTRIES.map((c) => (
+                  <option key={c} value={c}>
+                    {c}
+                  </option>
+                ))}
+              </select>
+              {p.nationality ? (
+                <p className="mt-1 text-[12px] font-semibold text-primary">{p.nationality}</p>
+              ) : null}
+            </div>
+            <div>
+              <label className={labelCls}>
+                {international ? "Passport number" : "ID number (optional)"}
+              </label>
+              <input
+                className={field}
+                placeholder={international ? "e.g. Z1234567" : "National ID"}
+                value={p.passport}
+                onChange={(e) => update(i, "passport", e.target.value)}
+              />
+            </div>
           </div>
         </GlassCard>
       ))}
+
 
       <GlassCard className="space-y-3">
         <p className="text-[15px] font-semibold">Contact details</p>

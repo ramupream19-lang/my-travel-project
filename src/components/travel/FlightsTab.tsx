@@ -11,6 +11,8 @@ import { getTravelGuide } from "@/lib/travel-guides";
 import {
   AIRPORTS,
   REGIONS,
+  airportName,
+
   TRIP_STYLES,
   customAirport,
   generateFlights,
@@ -69,8 +71,14 @@ function AirportField({
       />
 
       {value && !open ? (
-        <p className="mt-1 flex items-center gap-1 text-[12px] text-primary">
-          <Check className="h-3 w-3" /> {value.city} ({value.code}) · {value.country}
+        <p className="mt-1 flex items-start gap-1 text-[12px] text-primary">
+          <Check className="mt-0.5 h-3 w-3 shrink-0" />
+          <span>
+            <span className="font-bold">{airportName(value)}</span>
+            <span className="block text-[11px] text-subtle">
+              {value.city} ({value.code}) · {value.country}
+            </span>
+          </span>
         </p>
       ) : null}
 
@@ -86,17 +94,16 @@ function AirportField({
               onClick={() => choose(a)}
               className="tap flex w-full items-center gap-2 px-3 py-2 text-left text-[13px] hover:bg-muted"
             >
-              <Plane className="h-3.5 w-3.5 text-primary" />
+              <Plane className="h-3.5 w-3.5 shrink-0 text-primary" />
               <span>
-                <span className="font-semibold">
-                  {a.city} ({a.code})
-                </span>
+                <span className="font-bold">{airportName(a)}</span>
                 <span className="block text-[12px] text-subtle">
-                  {a.country} · {a.region}
+                  {a.city} ({a.code}) · {a.country}
                 </span>
               </span>
             </button>
           ))}
+
           <button
             type="button"
             onClick={() => choose(customAirport(typed))}
@@ -211,25 +218,28 @@ export function FlightsTab() {
 
   return (
     <div className="space-y-3">
-      <GlassCard className="space-y-3">
+      <GlassCard className="space-y-2.5">
         <AirportField
           label="Source"
           value={origin}
-          placeholder="Type a city, e.g. Chennai"
+          placeholder="Type your source city"
           onPick={(a: Airport) => {
             setOrigin(a);
+            setSearched(false);
           }}
         />
         <AirportField
           label="Destination"
           value={destination}
-          placeholder="Type any city or country worldwide"
+          placeholder="Type your destination city"
           onPick={(a: Airport) => {
             setDestination(a);
+            setSearched(false);
             setVisaCleared(false);
             if (!a.domestic || intl) setVisaOpen(true);
           }}
         />
+
 
         <div>
           <label className="mb-1 block text-[13px] text-muted-foreground">Travel date</label>
@@ -475,8 +485,18 @@ export function FlightsTab() {
 
       {/* RESULTS */}
       <GlassCard className="flex items-center justify-between py-3">
-        <p className="text-[13px] font-semibold">{filtered.length} flights found</p>
+        <p className="text-[13px] font-semibold">
+          {searched
+            ? `${filtered.length} flight${filtered.length === 1 ? "" : "s"} found`
+            : "Ready to search"}
+          {searched && origin && destination ? (
+            <span className="block text-[11px] font-normal text-subtle">
+              {origin.code} → {destination.code} · {paxLabel}
+            </span>
+          ) : null}
+        </p>
         <select
+          aria-label="Sort flights"
           value={sort}
           onChange={(e) => setSort(e.target.value as Sort)}
           className="rounded-lg border border-input bg-card/80 px-2 py-1 text-[12px]"
@@ -492,7 +512,27 @@ export function FlightsTab() {
         <GlassCard className="text-center text-[13px] text-muted-foreground">
           Pick a destination and search to see live results. Filters update instantly.
         </GlassCard>
+      ) : filtered.length === 0 ? (
+        <GlassCard className="space-y-3 text-center text-[13px] text-muted-foreground">
+          <p>
+            No flights match your filters for {origin?.code} → {destination?.code}. Try a bigger
+            budget or clear the filters.
+          </p>
+          <Button
+            variant="secondary"
+            className="tap h-11 w-full rounded-xl text-[13px] font-semibold"
+            onClick={() => {
+              setStopFilter("all");
+              setBudget(10000);
+              setStyles([]);
+              setRegion("Everywhere");
+            }}
+          >
+            Show all flights
+          </Button>
+        </GlassCard>
       ) : (
+
         filtered.map((f) => (
           <GlassCard key={f.id} hover className="space-y-3">
             <div className="flex items-center justify-between">
