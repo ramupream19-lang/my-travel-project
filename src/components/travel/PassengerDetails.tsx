@@ -3,13 +3,14 @@ import { ArrowLeft, UserRound } from "lucide-react";
 import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 import { GlassCard } from "./PhoneShell";
-import type { Flight } from "@/lib/travel-data";
+import { COUNTRIES, type Flight } from "@/lib/travel-data";
 
 export type PaxCounts = { adults: number; children: number; infants: number };
 
 type PaxForm = {
   type: "Adult" | "Child" | "Infant";
   firstName: string;
+  middleName: string;
   lastName: string;
   dob: string;
   gender: string;
@@ -21,6 +22,7 @@ function blankPax(type: PaxForm["type"]): PaxForm {
   return {
     type,
     firstName: "",
+    middleName: "",
     lastName: "",
     dob: "",
     gender: "",
@@ -31,6 +33,8 @@ function blankPax(type: PaxForm["type"]): PaxForm {
 
 const field =
   "h-11 w-full rounded-xl border border-input bg-card/80 px-3 text-[15px] outline-none focus:border-primary focus:ring-3 focus:ring-primary/10";
+const labelCls = "mb-1 block text-[12px] text-muted-foreground";
+
 
 export function PassengerDetails({
   flight,
