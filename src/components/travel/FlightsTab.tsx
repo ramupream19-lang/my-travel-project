@@ -135,8 +135,9 @@ function AirportField({
 
 
 export function FlightsTab() {
-  const [origin, setOrigin] = useState<Airport | null>(AIRPORTS[0] ?? null);
+  const [origin, setOrigin] = useState<Airport | null>(null);
   const [destination, setDestination] = useState<Airport | null>(null);
+
   const [date, setDate] = useState("");
   const [adults, setAdults] = useState(1);
   const [children, setChildren] = useState(0);
