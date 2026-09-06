@@ -50,37 +50,52 @@ function AirportField({
     setOpen(false);
   };
 
+  const startEditing = () => {
+    setOpen(true);
+    if (value) setQuery(value.city);
+  };
+
   return (
     <div className="relative">
       <label className="mb-1 block text-[13px] text-muted-foreground">{label}</label>
-      <input
-        value={query}
-        onChange={(e) => {
-          setQuery(e.target.value);
-          setOpen(true);
-        }}
-        onFocus={() => setOpen(true)}
-        onKeyDown={(e) => {
-          if (e.key === "Enter" && typed) {
-            e.preventDefault();
-            choose(matches[0] ?? customAirport(typed));
-          }
-        }}
-        placeholder={value ? `${value.city} (${value.code})` : placeholder}
-        className="h-11 w-full rounded-xl border border-input bg-card/80 px-3 text-[15px] outline-none focus:border-primary focus:ring-3 focus:ring-primary/10"
-      />
-
       {value && !open ? (
-        <p className="mt-1 flex items-start gap-1 text-[12px] text-primary">
-          <Check className="mt-0.5 h-3 w-3 shrink-0" />
-          <span>
-            <span className="font-bold">{airportName(value)}</span>
-            <span className="block text-[11px] text-subtle">
-              {value.city} ({value.code}) · {value.country}
-            </span>
-          </span>
-        </p>
-      ) : null}
+        <button
+          type="button"
+          onClick={startEditing}
+          className="flex h-11 w-full items-center gap-1 rounded-xl border border-input bg-card/80 px-3 text-left text-[15px] outline-none focus:border-primary focus:ring-3 focus:ring-primary/10"
+        >
+          <span className="font-bold">{airportName(value)}</span>
+          <span className="text-subtle">({value.code})</span>
+        </button>
+      ) : (
+        <input
+          autoFocus={open}
+          value={query}
+          onChange={(e) => {
+            setQuery(e.target.value);
+            setOpen(true);
+          }}
+          onFocus={() => setOpen(true)}
+          onBlur={() => {
+            // Keep dropdown open briefly so clicks register; close if no value.
+            setTimeout(() => {
+              if (!value) setOpen(false);
+            }, 150);
+          }}
+          onKeyDown={(e) => {
+            if (e.key === "Enter" && typed) {
+              e.preventDefault();
+              choose(matches[0] ?? customAirport(typed));
+            }
+            if (e.key === "Escape") {
+              setQuery("");
+              setOpen(false);
+            }
+          }}
+          placeholder={placeholder}
+          className="h-11 w-full rounded-xl border border-input bg-card/80 px-3 text-[15px] outline-none placeholder:font-normal focus:border-primary focus:ring-3 focus:ring-primary/10"
+        />
+      )}
 
       {open && typed ? (
         <div className="absolute z-30 mt-1 w-full overflow-hidden rounded-xl border border-glass-border bg-card shadow-lg">
@@ -116,6 +131,7 @@ function AirportField({
     </div>
   );
 }
+
 
 
 export function FlightsTab() {
