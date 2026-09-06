@@ -239,7 +239,7 @@ export function FlightsTab() {
         <AirportField
           label="Source"
           value={origin}
-          placeholder="Type your source city"
+          placeholder="Type your source"
           onPick={(a: Airport) => {
             setOrigin(a);
             setSearched(false);
@@ -248,7 +248,7 @@ export function FlightsTab() {
         <AirportField
           label="Destination"
           value={destination}
-          placeholder="Type your destination city"
+          placeholder="Type your destination"
           onPick={(a: Airport) => {
             setDestination(a);
             setSearched(false);
@@ -256,6 +256,7 @@ export function FlightsTab() {
             if (!a.domestic || intl) setVisaOpen(true);
           }}
         />
+
 
 
         <div>
