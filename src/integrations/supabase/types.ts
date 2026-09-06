@@ -14,6 +14,158 @@ export type Database = {
   }
   public: {
     Tables: {
+      booking_passengers: {
+        Row: {
+          booking_id: string
+          created_at: string
+          dob: string | null
+          document_number: string | null
+          first_name: string
+          gender: string | null
+          id: string
+          last_name: string
+          middle_name: string | null
+          nationality: string | null
+          passenger_type: string
+        }
+        Insert: {
+          booking_id: string
+          created_at?: string
+          dob?: string | null
+          document_number?: string | null
+          first_name: string
+          gender?: string | null
+          id?: string
+          last_name: string
+          middle_name?: string | null
+          nationality?: string | null
+          passenger_type: string
+        }
+        Update: {
+          booking_id?: string
+          created_at?: string
+          dob?: string | null
+          document_number?: string | null
+          first_name?: string
+          gender?: string | null
+          id?: string
+          last_name?: string
+          middle_name?: string | null
+          nationality?: string | null
+          passenger_type?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "booking_passengers_booking_id_fkey"
+            columns: ["booking_id"]
+            isOneToOne: false
+            referencedRelation: "bookings"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      bookings: {
+        Row: {
+          adults: number
+          airline: string
+          arrive_time: string
+          cabin: string
+          card_brand: string | null
+          card_holder: string | null
+          card_last4: string | null
+          children: number
+          contact_email: string
+          contact_phone: string
+          created_at: string
+          currency: string
+          depart_date: string | null
+          depart_time: string
+          duration: string
+          flight_number: string
+          from_city: string
+          from_code: string
+          id: string
+          infants: number
+          payment_status: string
+          reference: string
+          return_date: string | null
+          status: string
+          stops: number
+          to_city: string
+          to_code: string
+          total_price: number
+          unit_price: number
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          adults?: number
+          airline: string
+          arrive_time: string
+          cabin?: string
+          card_brand?: string | null
+          card_holder?: string | null
+          card_last4?: string | null
+          children?: number
+          contact_email: string
+          contact_phone: string
+          created_at?: string
+          currency?: string
+          depart_date?: string | null
+          depart_time: string
+          duration: string
+          flight_number: string
+          from_city: string
+          from_code: string
+          id?: string
+          infants?: number
+          payment_status?: string
+          reference: string
+          return_date?: string | null
+          status?: string
+          stops?: number
+          to_city: string
+          to_code: string
+          total_price: number
+          unit_price: number
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          adults?: number
+          airline?: string
+          arrive_time?: string
+          cabin?: string
+          card_brand?: string | null
+          card_holder?: string | null
+          card_last4?: string | null
+          children?: number
+          contact_email?: string
+          contact_phone?: string
+          created_at?: string
+          currency?: string
+          depart_date?: string | null
+          depart_time?: string
+          duration?: string
+          flight_number?: string
+          from_city?: string
+          from_code?: string
+          id?: string
+          infants?: number
+          payment_status?: string
+          reference?: string
+          return_date?: string | null
+          status?: string
+          stops?: number
+          to_city?: string
+          to_code?: string
+          total_price?: number
+          unit_price?: number
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
       saved_trips: {
         Row: {
           created_at: string
