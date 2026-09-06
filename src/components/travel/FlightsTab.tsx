@@ -50,37 +50,52 @@ function AirportField({
     setOpen(false);
   };
 
+  const startEditing = () => {
+    setOpen(true);
+    if (value) setQuery(value.city);
+  };
+
   return (
     <div className="relative">
       <label className="mb-1 block text-[13px] text-muted-foreground">{label}</label>
-      <input
-        value={query}
-        onChange={(e) => {
-          setQuery(e.target.value);
-          setOpen(true);
-        }}
-        onFocus={() => setOpen(true)}
-        onKeyDown={(e) => {
-          if (e.key === "Enter" && typed) {
-            e.preventDefault();
-            choose(matches[0] ?? customAirport(typed));
-          }
-        }}
-        placeholder={value ? `${value.city} (${value.code})` : placeholder}
-        className="h-11 w-full rounded-xl border border-input bg-card/80 px-3 text-[15px] outline-none focus:border-primary focus:ring-3 focus:ring-primary/10"
-      />
-
       {value && !open ? (
-        <p className="mt-1 flex items-start gap-1 text-[12px] text-primary">
-          <Check className="mt-0.5 h-3 w-3 shrink-0" />
-          <span>
-            <span className="font-bold">{airportName(value)}</span>
-            <span className="block text-[11px] text-subtle">
-              {value.city} ({value.code}) · {value.country}
-            </span>
-          </span>
-        </p>
-      ) : null}
+        <button
+          type="button"
+          onClick={startEditing}
+          className="flex h-11 w-full items-center gap-1 rounded-xl border border-input bg-card/80 px-3 text-left text-[15px] outline-none focus:border-primary focus:ring-3 focus:ring-primary/10"
+        >
+          <span className="font-bold">{airportName(value)}</span>
+          <span className="text-subtle">({value.code})</span>
+        </button>
+      ) : (
+        <input
+          autoFocus={open}
+          value={query}
+          onChange={(e) => {
+            setQuery(e.target.value);
+            setOpen(true);
+          }}
+          onFocus={() => setOpen(true)}
+          onBlur={() => {
+            // Keep dropdown open briefly so clicks register; close if no value.
+            setTimeout(() => {
+              if (!value) setOpen(false);
+            }, 150);
+          }}
+          onKeyDown={(e) => {
+            if (e.key === "Enter" && typed) {
+              e.preventDefault();
+              choose(matches[0] ?? customAirport(typed));
+            }
+            if (e.key === "Escape") {
+              setQuery("");
+              setOpen(false);
+            }
+          }}
+          placeholder={placeholder}
+          className="h-11 w-full rounded-xl border border-input bg-card/80 px-3 text-[15px] outline-none placeholder:font-normal focus:border-primary focus:ring-3 focus:ring-primary/10"
+        />
+      )}
 
       {open && typed ? (
         <div className="absolute z-30 mt-1 w-full overflow-hidden rounded-xl border border-glass-border bg-card shadow-lg">
@@ -118,9 +133,11 @@ function AirportField({
 }
 
 
+
 export function FlightsTab() {
-  const [origin, setOrigin] = useState<Airport | null>(AIRPORTS[0] ?? null);
+  const [origin, setOrigin] = useState<Airport | null>(null);
   const [destination, setDestination] = useState<Airport | null>(null);
+
   const [date, setDate] = useState("");
   const [adults, setAdults] = useState(1);
   const [children, setChildren] = useState(0);
@@ -222,7 +239,7 @@ export function FlightsTab() {
         <AirportField
           label="Source"
           value={origin}
-          placeholder="Type your source city"
+          placeholder="Type your source"
           onPick={(a: Airport) => {
             setOrigin(a);
             setSearched(false);
@@ -231,7 +248,7 @@ export function FlightsTab() {
         <AirportField
           label="Destination"
           value={destination}
-          placeholder="Type your destination city"
+          placeholder="Type your destination"
           onPick={(a: Airport) => {
             setDestination(a);
             setSearched(false);
@@ -239,6 +256,7 @@ export function FlightsTab() {
             if (!a.domestic || intl) setVisaOpen(true);
           }}
         />
+
 
 
         <div>
@@ -309,8 +327,8 @@ export function FlightsTab() {
         <Button
           className="gradient-primary tap h-12 w-full rounded-xl text-[15px] font-semibold text-primary-foreground"
           onClick={() => {
-            if (!destination) {
-              toast.error("Pick a destination first");
+            if (!origin || !destination) {
+              toast.error("Pick a source and destination first");
               return;
             }
             if (intl && !visaCleared) {
@@ -322,6 +340,7 @@ export function FlightsTab() {
         >
           <Search className="mr-1 h-4 w-4" /> Search flights
         </Button>
+
       </GlassCard>
 
       {/* POPULAR FLIGHTS — DOMESTIC + INTERNATIONAL */}
