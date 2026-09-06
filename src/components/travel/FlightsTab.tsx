@@ -327,8 +327,8 @@ export function FlightsTab() {
         <Button
           className="gradient-primary tap h-12 w-full rounded-xl text-[15px] font-semibold text-primary-foreground"
           onClick={() => {
-            if (!destination) {
-              toast.error("Pick a destination first");
+            if (!origin || !destination) {
+              toast.error("Pick a source and destination first");
               return;
             }
             if (intl && !visaCleared) {
@@ -340,6 +340,7 @@ export function FlightsTab() {
         >
           <Search className="mr-1 h-4 w-4" /> Search flights
         </Button>
+
       </GlassCard>
 
       {/* POPULAR FLIGHTS — DOMESTIC + INTERNATIONAL */}
